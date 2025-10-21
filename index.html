@@ -1207,6 +1207,20 @@ Click on the desktop icons to explore different features!</pre>
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight - (isMobile ? 40 : 30);
                 
+                // 移动端确保窗口标题栏可见
+                if (isMobile) {
+                    const minTop = 10; // 距离顶部至少10px
+                    const maxTop = screenHeight - windowHeight - 10; // 距离底部至少10px
+                    // 如果计算出的top小于最小值，则使用最小值
+                    if (openWindows.length === 0) {
+                        const calculatedTop = (screenHeight - windowHeight) / 2;
+                        if (calculatedTop < minTop) {
+                            // 重新计算，确保窗口完全可见
+                            windowHeight = Math.min(windowHeight, screenHeight - minTop - 10);
+                        }
+                    }
+                }
+                
                 // 计算窗口位置 - 实现重叠效果
                 let left, top;
                 
@@ -1214,6 +1228,12 @@ Click on the desktop icons to explore different features!</pre>
                     // 第一个窗口居中
                     left = (screenWidth - windowWidth) / 2;
                     top = (screenHeight - windowHeight) / 2;
+                    
+                    // 移动端确保标题栏可见
+                    if (isMobile) {
+                        const minTop = 10;
+                        top = Math.max(minTop, top);
+                    }
                 } else {
                     // 后续窗口稍微偏移，实现重叠效果
                     const offsetX = 30; // 水平偏移
@@ -1231,6 +1251,12 @@ Click on the desktop icons to explore different features!</pre>
                     }
                     if (top + windowHeight > screenHeight) {
                         top = Math.max(0, screenHeight - windowHeight);
+                    }
+                    
+                    // 移动端确保标题栏可见
+                    if (isMobile) {
+                        const minTop = 10;
+                        top = Math.max(minTop, top);
                     }
                 }
                 
@@ -1778,6 +1804,27 @@ Click on the desktop icons to explore different features!</pre>
             }
         });
 
+        // 触摸拖拽支持（移动端）
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.closest('.window-titlebar')) {
+                draggedWindow = e.target.closest('.window');
+                if (draggedWindow) {
+                    isDragging = true;
+                    // Bring window to front
+                    const allWindows = document.querySelectorAll('.window');
+                    allWindows.forEach(w => w.style.zIndex = '100');
+                    draggedWindow.style.zIndex = '200';
+                    
+                    const rect = draggedWindow.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    dragOffset.x = touch.clientX - rect.left;
+                    dragOffset.y = touch.clientY - rect.top;
+                    
+                    e.preventDefault();
+                }
+            }
+        });
+
         document.addEventListener('mousemove', function(e) {
             if (isDragging && draggedWindow) {
                 const newX = e.clientX - dragOffset.x;
@@ -1794,7 +1841,33 @@ Click on the desktop icons to explore different features!</pre>
             }
         });
 
+        // 触摸移动事件（移动端）
+        document.addEventListener('touchmove', function(e) {
+            if (isDragging && draggedWindow) {
+                const touch = e.touches[0];
+                const newX = touch.clientX - dragOffset.x;
+                const newY = touch.clientY - dragOffset.y;
+                
+                // Keep window within bounds
+                const isMobile = window.innerWidth <= 768;
+                const taskbarHeight = isMobile ? 40 : 30;
+                const maxX = window.innerWidth - draggedWindow.offsetWidth;
+                const maxY = window.innerHeight - draggedWindow.offsetHeight - taskbarHeight;
+                
+                draggedWindow.style.left = Math.max(0, Math.min(newX, maxX)) + 'px';
+                draggedWindow.style.top = Math.max(0, Math.min(newY, maxY)) + 'px';
+                
+                e.preventDefault(); // 防止页面滚动
+            }
+        });
+
         document.addEventListener('mouseup', function() {
+            isDragging = false;
+            draggedWindow = null;
+        });
+
+        // 触摸结束事件（移动端）
+        document.addEventListener('touchend', function() {
             isDragging = false;
             draggedWindow = null;
         });
