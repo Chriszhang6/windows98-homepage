@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Homepage - Windows 98</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'MS Sans Serif', sans-serif;
+            font-size: 11px;
+            background: #008080;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .desktop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 30px);
+            background: #008080;
+            overflow: hidden;
+        }
+
+        .desktop-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 2px;
+            transition: background-color 0.1s;
+        }
+
+        .desktop-icon:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .desktop-icon img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+        }
+
+        .desktop-icon span {
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+            word-wrap: break-word;
+            max-width: 120px;
+        }
+
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border-top: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .start-button {
+            height: 100%;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            border-right: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            min-width: 80px;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .start-button:active {
+            background: linear-gradient(to bottom, #a0a0a0, #c0c0c0);
+            border: 1px inset #c0c0c0;
+        }
+
+        .start-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+        }
+
+        .taskbar-items {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            height: 100%;
+            border-left: 1px solid #808080;
+        }
+
+        .clock {
+            font-size: 11px;
+            color: #000;
+            padding: 0 5px;
+        }
+
+        .start-menu {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            width: 200px;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            display: none;
+            z-index: 1001;
+        }
+
+        .start-menu-header {
+            background: linear-gradient(90deg, #000080, #0000ff);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .start-menu-items {
+            padding: 2px 0;
+        }
+
+        .start-menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .start-menu-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .start-menu-separator {
+            height: 1px;
+            background: #808080;
+            margin: 2px 0;
+        }
+
+        .window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            min-width: 300px;
+            min-height: 200px;
+            z-index: 100;
+        }
+
+        .window-titlebar {
+            background: linear-gradient(90deg, #000080, #0000ff);
+            color: white;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .window-title {
+            flex: 1;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .window-controls button {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px outset #c0c0c0;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .window-controls button:hover {
+            background: #d0d0d0;
+        }
+
+        .window-controls button:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(135deg, #c0c0c0 0%, #c0c0c0 30%, #808080 30%, #808080 100%);
+            cursor: nw-resize;
+            border-top: 1px solid #808080;
+            border-left: 1px solid #808080;
+        }
+
+        .resize-handle:hover {
+            background: linear-gradient(135deg, #d0d0d0 0%, #d0d0d0 30%, #909090 30%, #909090 100%);
+        }
+
+        .window-content {
+            padding: 10px;
+            height: calc(100% - 24px);
+            overflow: auto;
+        }
+
+        .about-content h2 {
+            color: #000080;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .about-content p {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .about-content ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .about-content li {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .computer-drives {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            align-items: flex-start;
+        }
+
+        .drive-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+            cursor: pointer;
+            padding: 3px;
+            border-radius: 2px;
+            transition: background-color 0.1s;
+        }
+
+        .drive-icon:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .drive-icon img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 3px;
+        }
+
+        .drive-icon span {
+            font-size: 10px;
+            text-align: center;
+            word-wrap: break-word;
+            max-width: 70px;
+        }
+
+        /* CD Player Styles */
+        .cd-player {
+            padding: 20px;
+            background: #c0c0c0;
+            border: 2px inset #c0c0c0;
+        }
+
+        .cd-player-display {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            border: 2px inset #000;
+        }
+
+        .cd-player-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cd-player-track, .cd-player-time {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .cd-player-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .cd-btn {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 2px outset #c0c0c0;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cd-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .cd-btn:active {
+            border: 2px inset #c0c0c0;
+        }
+
+        .play-btn {
+            width: 50px;
+            height: 35px;
+            font-size: 16px;
+        }
+
+        .cd-player-volume {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cd-player-volume label {
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .cd-player-volume input[type="range"] {
+            width: 150px;
+        }
+
+        .cd-player-playlist h4 {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .playlist {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px inset #c0c0c0;
+            background: #fff;
+            padding: 5px;
+        }
+
+        .playlist-item {
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc;
+            font-size: 11px;
+        }
+
+        .playlist-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .playlist-item.active {
+            background: #0000ff;
+            color: white;
+        }
+
+        /* Paint Styles */
+        .paint-toolbar {
+            background: #c0c0c0;
+            border: 2px inset #c0c0c0;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .paint-tools {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .paint-tool-btn {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 2px outset #c0c0c0;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .paint-tool-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .paint-tool-btn:active {
+            border: 2px inset #c0c0c0;
+        }
+
+        .paint-tool-btn.selected {
+            border: 2px inset #c0c0c0;
+            background: linear-gradient(to bottom, #a0a0a0, #c0c0c0);
+        }
+
+        .paint-colors {
+            border-top: 1px solid #808080;
+            padding-top: 5px;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            max-width: 200px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            cursor: pointer;
+            border: 2px outset #c0c0c0;
+        }
+
+        .color-swatch:hover {
+            border: 2px inset #c0c0c0;
+        }
+
+        .color-swatch.selected {
+            border: 2px inset #c0c0c0;
+        }
+
+        .paint-canvas-container {
+            border: 2px inset #c0c0c0;
+            background: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .paint-canvas {
+            display: inline-block;
+            border: 1px solid #000;
+            background: #fff;
+            position: relative;
+        }
+
+        .paint-photo {
+            max-width: 300px;
+            max-height: 300px;
+            display: block;
+        }
+
+        /* File Icon Styles */
+        .about-files {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            align-items: flex-start;
+        }
+
+        .file-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+            cursor: pointer;
+            padding: 3px;
+            border-radius: 2px;
+            transition: background-color 0.1s;
+        }
+
+        .file-icon:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .file-icon img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 3px;
+        }
+
+        .file-icon span {
+            font-size: 10px;
+            text-align: center;
+            word-wrap: break-word;
+            max-width: 70px;
+        }
+
+        .text-file-content {
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            background: #fff;
+            border: 1px inset #c0c0c0;
+            margin: 10px;
+        }
+
+        .text-file-content pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Internet Explorer Styles */
+        .ie-toolbar {
+            background: #c0c0c0;
+            border-bottom: 1px solid #808080;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .ie-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .ie-btn {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ie-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .ie-btn:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        .ie-address-bar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ie-address-bar label {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .ie-address-bar input {
+            flex: 1;
+            height: 20px;
+            border: 1px inset #c0c0c0;
+            padding: 2px 5px;
+            font-size: 11px;
+        }
+
+        .ie-go-btn {
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .ie-go-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .ie-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ie-status-bar {
+            background: #c0c0c0;
+            border-top: 1px solid #808080;
+            padding: 2px 5px;
+            font-size: 11px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ie-page-content {
+            flex: 1;
+            padding: 10px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        .ie-page-content h2 {
+            color: #000080;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .ie-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ie-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .ie-link:hover {
+            background: #000080;
+            color: white;
+            border: 1px solid #000080;
+        }
+
+        .ie-link img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .ie-link span {
+            font-size: 12px;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+            .desktop {
+                height: calc(100vh - 40px);
+            }
+
+            .desktop-icons {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+
+            .desktop-icon {
+                width: 150px;
+                padding: 12px;
+            }
+
+            .desktop-icon img {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 8px;
+            }
+
+            .desktop-icon span {
+                font-size: 14px;
+                max-width: 150px;
+            }
+
+            .taskbar {
+                height: 40px;
+                font-size: 12px;
+            }
+
+            .start-button {
+                min-width: 100px;
+                font-size: 12px;
+                padding: 0 10px;
+            }
+
+            .start-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .window {
+                min-width: 300px;
+                min-height: 200px;
+                max-width: 90vw;
+                max-height: 70vh;
+            }
+
+            .window-content {
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            .computer-drives {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+                justify-content: center;
+            }
+
+            .drive-icon {
+                width: 100px;
+            }
+
+            .drive-icon img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .drive-icon span {
+                font-size: 12px;
+                max-width: 100px;
+            }
+
+            .start-menu {
+                width: 250px;
+                bottom: 40px;
+            }
+
+            .start-menu-item {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .about-content h2 {
+                font-size: 16px;
+            }
+
+            .about-content p, .about-content li {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .recycle-bin-content, .drive-content {
+                font-size: 14px;
+                text-align: center;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .desktop-icons {
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .desktop-icon {
+                width: 120px;
+                padding: 10px;
+            }
+
+            .desktop-icon img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .desktop-icon span {
+                font-size: 13px;
+                max-width: 120px;
+            }
+
+            .window {
+                min-width: 280px;
+                min-height: 200px;
+                max-width: 95vw;
+                max-height: 75vh;
+            }
+
+            .window-content {
+                padding: 12px;
+            }
+
+            .computer-drives {
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .drive-icon {
+                width: 80px;
+            }
+
+            .drive-icon img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .start-button {
+                min-width: 80px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Background -->
+    <div class="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <!-- Recycle Bin -->
+            <div class="desktop-icon" id="recycle-bin" onclick="openWindow('recycle-bin-window')">
+                <img src="recycle_bin.png" alt="Recycle Bin">
+                <span>Recycle Bin</span>
+            </div>
+            
+            <!-- My Computer -->
+            <div class="desktop-icon" id="my-computer" onclick="openWindow('my-computer-window')">
+                <img src="computer.png" alt="Computer">
+                <span>Computer</span>
+            </div>
+            
+            <!-- About Me -->
+            <div class="desktop-icon" id="about-me" onclick="openWindow('about-window')">
+                <img src="About_me.png" alt="About Me">
+                <span>About Me</span>
+            </div>
+        </div>
+        
+        <!-- Windows Container -->
+        <div class="windows-container" id="windows-container"></div>
+    </div>
+    
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" id="start-button" onclick="toggleStartMenu()">
+            <img src="start_icon.png" alt="Start" class="start-icon">
+            <span>Start</span>
+        </div>
+        <div class="taskbar-items" id="taskbar-items">
+            <!-- Taskbar items will be added dynamically -->
+        </div>
+        <div class="system-tray">
+            <div class="clock" id="clock">12:00</div>
+        </div>
+    </div>
+    
+    <!-- Start Menu -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">
+            <span>Windows 98</span>
+        </div>
+        <div class="start-menu-items">
+            <div class="start-menu-item" onclick="openWindow('my-computer-window')">
+                <span>Computer</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('about-window')">
+                <span>About Me</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('cd-player-window'); loadPlaylist();">
+                <span>CD Player</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('paint-window')">
+                <span>Paint</span>
+            </div>
+            <div class="start-menu-separator"></div>
+            <div class="start-menu-item" onclick="shutdown()">
+                <span>Shut Down...</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- About Me Window -->
+    <div class="window" id="about-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">About Me</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('about-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('about-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('about-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="about-files">
+                <div class="file-icon" onclick="openTextFile()">
+                    <img src="text.png" alt="About Me">
+                    <span>About Me.txt</span>
+                </div>
+                <div class="file-icon" onclick="openInternetExplorer()">
+                    <img src="internet.png" alt="Internet Explorer">
+                    <span>Internet Explorer</span>
+            </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- My Computer Window -->
+    <div class="window" id="my-computer-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Computer</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('my-computer-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('my-computer-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('my-computer-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="computer-drives">
+                <div class="drive-icon" onclick="openCDrive()">
+                    <img src="c_drive.png" alt="C:">
+                    <span>C:</span>
+            </div>
+                <div class="drive-icon" onclick="openCDPlayer()">
+                    <img src="cd_player.png" alt="CD Player">
+                    <span>CD Player</span>
+                </div>
+                <div class="drive-icon" onclick="openPaint()">
+                    <img src="paint_tool.png" alt="Paint">
+                    <span>Paint</span>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- C: Drive Window -->
+    <div class="window" id="c-drive-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">C:</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('c-drive-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('c-drive-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('c-drive-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="drive-content">
+                <p>This folder is empty.</p>
+                </div>
+            <div class="resize-handle"></div>
+                </div>
+            </div>
+    
+    <!-- Recycle Bin Window -->
+    <div class="window" id="recycle-bin-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Recycle Bin</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('recycle-bin-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('recycle-bin-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('recycle-bin-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="recycle-bin-content">
+                <p>The Recycle Bin is empty.</p>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- CD Player Window -->
+    <div class="window" id="cd-player-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">CD Player</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('cd-player-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('cd-player-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('cd-player-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="cd-player">
+                <div class="cd-player-display">
+                    <div class="cd-player-title">Windows 98 CD Player</div>
+                    <div class="cd-player-track">Track: <span id="current-track">1</span></div>
+                    <div class="cd-player-time">Time: <span id="current-time">00:00</span></div>
+                </div>
+                <div class="cd-player-controls">
+                    <button class="cd-btn" onclick="previousTrack()">⏮</button>
+                    <button class="cd-btn play-btn" onclick="togglePlay()" id="play-btn">▶</button>
+                    <button class="cd-btn" onclick="nextTrack()">⏭</button>
+                    <button class="cd-btn" onclick="stopMusic()">⏹</button>
+                </div>
+                <div class="cd-player-volume">
+                    <label>Volume:</label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+                </div>
+                <div class="cd-player-playlist">
+                    <h4>Playlist:</h4>
+                    <div id="playlist" class="playlist">
+                        <!-- Playlist will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Paint Window -->
+    <div class="window" id="paint-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Paint</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('paint-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('paint-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('paint-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="paint-toolbar">
+                <div class="paint-tools">
+                    <button class="paint-tool-btn" title="Pencil">✏️</button>
+                    <button class="paint-tool-btn" title="Brush">🖌️</button>
+                    <button class="paint-tool-btn" title="Eraser">🧽</button>
+                    <button class="paint-tool-btn" title="Text">A</button>
+                    <button class="paint-tool-btn" title="Line">📏</button>
+                    <button class="paint-tool-btn" title="Rectangle">⬜</button>
+                    <button class="paint-tool-btn" title="Circle">⭕</button>
+                </div>
+                <div class="paint-colors">
+                    <div class="color-palette">
+                        <div class="color-swatch" style="background: #000000;" onclick="selectColor('#000000')"></div>
+                        <div class="color-swatch" style="background: #800000;" onclick="selectColor('#800000')"></div>
+                        <div class="color-swatch" style="background: #008000;" onclick="selectColor('#008000')"></div>
+                        <div class="color-swatch" style="background: #808000;" onclick="selectColor('#808000')"></div>
+                        <div class="color-swatch" style="background: #000080;" onclick="selectColor('#000080')"></div>
+                        <div class="color-swatch" style="background: #800080;" onclick="selectColor('#800080')"></div>
+                        <div class="color-swatch" style="background: #008080;" onclick="selectColor('#008080')"></div>
+                        <div class="color-swatch" style="background: #C0C0C0;" onclick="selectColor('#C0C0C0')"></div>
+                        <div class="color-swatch" style="background: #808080;" onclick="selectColor('#808080')"></div>
+                        <div class="color-swatch" style="background: #FF0000;" onclick="selectColor('#FF0000')"></div>
+                        <div class="color-swatch" style="background: #00FF00;" onclick="selectColor('#00FF00')"></div>
+                        <div class="color-swatch" style="background: #FFFF00;" onclick="selectColor('#FFFF00')"></div>
+                        <div class="color-swatch" style="background: #0000FF;" onclick="selectColor('#0000FF')"></div>
+                        <div class="color-swatch" style="background: #FF00FF;" onclick="selectColor('#FF00FF')"></div>
+                        <div class="color-swatch" style="background: #00FFFF;" onclick="selectColor('#00FFFF')"></div>
+                        <div class="color-swatch" style="background: #FFFFFF;" onclick="selectColor('#FFFFFF')"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="paint-canvas-container">
+                <div class="paint-canvas" id="paint-canvas">
+                    <img src="photo.jpeg" alt="Your Photo" class="paint-photo">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Text File Window -->
+    <div class="window" id="text-file-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">About Me.txt</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('text-file-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('text-file-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('text-file-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="text-file-content">
+                <pre>Welcome to My Personal Homepage!
+I'm Chris Zhang. 
+This is a Windows 98 style personal homepage with the following features:
+🎨 Classic Windows 98 interface design
+📁 Interactive desktop icons and folders
+🖼️ Photos folder for displaying personal photos
+🖱️ Drag and drop and window management features
+🔊 Classic system sound effects
+Click on the desktop icons to explore different features!</pre>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Internet Explorer Window -->
+    <div class="window" id="ie-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Internet Explorer</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('ie-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('ie-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('ie-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="ie-toolbar">
+                <div class="ie-buttons">
+                    <button class="ie-btn" title="Back">◀</button>
+                    <button class="ie-btn" title="Forward">▶</button>
+                    <button class="ie-btn" title="Stop">⏹</button>
+                    <button class="ie-btn" title="Refresh">🔄</button>
+                    <button class="ie-btn" title="Home">🏠</button>
+                </div>
+                <div class="ie-address-bar">
+                    <label>Address:</label>
+                    <input type="text" id="ie-address" value="http://www.linkedin.com/in/chris-y-zhang/" readonly>
+                    <button class="ie-go-btn" onclick="goToAddress()">Go</button>
+                </div>
+            </div>
+            <div class="ie-content">
+                <div class="ie-status-bar">
+                    <span id="ie-status">Done</span>
+                </div>
+                <div class="ie-page-content">
+                    <h2>Chris Zhang's Professional Profile</h2>
+                    <div class="ie-links">
+                        <div class="ie-link" onclick="setAddress('https://www.linkedin.com/in/chris-y-zhang/')">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
+                            <span>LinkedIn Profile</span>
+                        </div>
+                        <div class="ie-link" onclick="setAddress('https://ml-algorithms-explorer-6cccfacb7705.herokuapp.com')">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
+                            <span>ML Algorithms Explorer</span>
+                        </div>
+                        <div class="ie-link" onclick="setAddress('https://au-property-search-llama-a4cd5b298669.herokuapp.com')">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
+                            <span>AU Property Search</span>
+                        </div>
+                        <div class="ie-link" onclick="setAddress('https://greyhound-ab436e93558c.herokuapp.com/home')">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
+                            <span>Greyhound Sanctuary</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    
+    <script>
+        function toggleStartMenu() {
+            const startMenu = document.getElementById('start-menu');
+            if (startMenu.style.display === 'none' || startMenu.style.display === '') {
+                startMenu.style.display = 'block';
+            } else {
+                startMenu.style.display = 'none';
+            }
+        }
+
+        function openWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                // Close start menu if open
+                const startMenu = document.getElementById('start-menu');
+                if (startMenu) {
+                    startMenu.style.display = 'none';
+                }
+                
+                window.style.display = 'block';
+                
+                // Responsive window sizing
+                const isMobile = window.innerWidth <= 768;
+                let windowWidth, windowHeight;
+                
+                if (isMobile) {
+                    windowWidth = Math.min(320, window.innerWidth - 20);
+                    windowHeight = Math.min(220, window.innerHeight - 100);
+                } else {
+                    windowWidth = 400;
+                    windowHeight = 300;
+                }
+                
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight - (isMobile ? 40 : 30);
+                
+                const left = (screenWidth - windowWidth) / 2;
+                const top = (screenHeight - windowHeight) / 2;
+                
+                window.style.left = left + 'px';
+                window.style.top = top + 'px';
+                window.style.width = windowWidth + 'px';
+                window.style.height = windowHeight + 'px';
+                
+                // Add to taskbar
+                addToTaskbar(windowId, window.querySelector('.window-title').textContent);
+                // Bring to front
+                bringToFront(window);
+            }
+        }
+
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'none';
+                
+                // Remove from taskbar
+                const taskbarItem = document.querySelector(`[data-window-id="${windowId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.remove();
+                }
+            }
+        }
+
+        function openCDrive() {
+            openWindow('c-drive-window');
+        }
+
+        function openCDPlayer() {
+            openWindow('cd-player-window');
+            loadPlaylist();
+        }
+
+        function openPaint() {
+            openWindow('paint-window');
+        }
+
+        function openTextFile() {
+            openWindow('text-file-window');
+        }
+
+        function openInternetExplorer() {
+            openWindow('ie-window');
+        }
+
+        function setAddress(url) {
+            document.getElementById('ie-address').value = url;
+            document.getElementById('ie-status').textContent = 'Ready to navigate';
+        }
+
+        function goToAddress() {
+            const address = document.getElementById('ie-address').value;
+            if (address) {
+                document.getElementById('ie-status').textContent = 'Connecting...';
+                setTimeout(() => {
+                    window.open(address, '_blank');
+                    document.getElementById('ie-status').textContent = 'Done';
+                }, 1000);
+            }
+        }
+
+        function shutdown() {
+            // 创建关机对话框
+            const shutdownDialog = document.createElement('div');
+            shutdownDialog.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #c0c0c0;
+                border: 2px outset #c0c0c0;
+                padding: 20px;
+                z-index: 10000;
+                text-align: center;
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            `;
+            
+            shutdownDialog.innerHTML = `
+                <div style="margin-bottom: 15px; font-weight: bold;">Shut Down Windows</div>
+                <div style="margin-bottom: 15px;">It's now safe to turn off your computer.</div>
+                <button onclick="performShutdown()" style="
+                    background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+                    border: 1px outset #c0c0c0;
+                    padding: 5px 15px;
+                    cursor: pointer;
+                ">OK</button>
+            `;
+            
+            document.body.appendChild(shutdownDialog);
+            
+            // 关闭所有窗口
+            document.querySelectorAll('.window').forEach(window => {
+                window.style.display = 'none';
+            });
+            
+            // 关闭Start菜单
+            document.getElementById('start-menu').style.display = 'none';
+            
+            // 添加关机音效（模拟）
+            console.log('*关机音效*');
+        }
+
+        function performShutdown() {
+            // 移除关机对话框
+            const shutdownDialog = document.querySelector('div[style*="position: fixed"]');
+            if (shutdownDialog) {
+                shutdownDialog.remove();
+            }
+            
+            // 创建黑屏
+            const blackScreen = document.createElement('div');
+            blackScreen.id = 'black-screen';
+            blackScreen.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #000000;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #00ff00;
+                font-family: 'Courier New', monospace;
+                font-size: 14px;
+            `;
+            
+            blackScreen.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="margin-bottom: 20px;">Windows 98</div>
+                    <div style="margin-bottom: 10px;">Shutting down...</div>
+                    <div style="margin-bottom: 20px;">Please wait while your computer shuts down.</div>
+                    <div style="font-size: 12px; color: #666;">Press F5 to restart</div>
+                </div>
+            `;
+            
+            document.body.appendChild(blackScreen);
+            
+            // 添加重启功能
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'F5') {
+                    restart();
+                }
+            });
+        }
+
+        function restart() {
+            // 移除黑屏
+            const blackScreen = document.getElementById('black-screen');
+            if (blackScreen) {
+                blackScreen.remove();
+            }
+            
+            // 重新显示桌面
+            document.querySelectorAll('.window').forEach(window => {
+                window.style.display = 'none';
+            });
+            
+            // 显示桌面图标
+            document.querySelectorAll('.desktop-icon').forEach(icon => {
+                icon.style.display = 'block';
+            });
+            
+            // 显示任务栏
+            document.getElementById('taskbar').style.display = 'flex';
+            
+            console.log('*重启音效*');
+        }
+
+        // 键盘点击声音效果
+        function playClickSound() {
+            // 创建音频上下文
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // 创建振荡器
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            // 连接节点
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // 设置音调（模拟键盘点击声）
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.type = 'square';
+            
+            // 设置音量包络（快速衰减）
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            // 播放声音
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // 为所有按钮添加点击声音
+        function addClickSounds() {
+            // 为所有按钮添加点击事件
+            document.addEventListener('click', function(event) {
+                const target = event.target;
+                
+                // 检查是否是按钮或可点击元素
+                if (target.tagName === 'BUTTON' || 
+                    target.classList.contains('start-button') ||
+                    target.classList.contains('desktop-icon') ||
+                    target.classList.contains('start-menu-item') ||
+                    target.classList.contains('window-control') ||
+                    target.classList.contains('cd-btn') ||
+                    target.classList.contains('paint-tool-btn') ||
+                    target.classList.contains('ie-btn') ||
+                    target.classList.contains('ie-go-btn') ||
+                    target.classList.contains('color-swatch') ||
+                    target.classList.contains('drive-icon') ||
+                    target.classList.contains('file-icon')) {
+                    
+                    playClickSound();
+                }
+            });
+        }
+
+        // 页面加载完成后添加点击声音
+        document.addEventListener('DOMContentLoaded', function() {
+            addClickSounds();
+        });
+
+        // CD Player functionality
+        let currentAudio = null;
+        let currentTrack = 0;
+        let playlist = [];
+        let isPlaying = false;
+
+        function loadPlaylist() {
+            // 这里可以添加你的MP3文件
+            playlist = [
+                { name: "Frankie Valli - Can't Take My Eyes Off You", file: "Frankie Valli - Can't Take My Eyes Off You.mp3" },
+                { name: "Les Champs-Elysées", file: "Les Champs-Elysées.mp3" }
+            ];
+            
+            const playlistDiv = document.getElementById('playlist');
+            playlistDiv.innerHTML = '';
+            
+            playlist.forEach((song, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                item.textContent = `${index + 1}. ${song.name}`;
+                item.onclick = () => playTrack(index);
+                playlistDiv.appendChild(item);
+            });
+        }
+
+        function playTrack(index) {
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            
+            currentTrack = index;
+            currentAudio = new Audio(playlist[index].file);
+            currentAudio.volume = document.getElementById('volume-slider').value / 100;
+            
+            currentAudio.onloadeddata = () => {
+                updateDisplay();
+            };
+            
+            currentAudio.ontimeupdate = () => {
+                updateTime();
+            };
+            
+            currentAudio.onended = () => {
+                nextTrack();
+            };
+            
+            // Update active track in playlist
+            document.querySelectorAll('.playlist-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        }
+
+        function togglePlay() {
+            if (!currentAudio) {
+                playTrack(0);
+                return;
+            }
+            
+            if (isPlaying) {
+                currentAudio.pause();
+                document.getElementById('play-btn').textContent = '▶';
+                isPlaying = false;
+            } else {
+                currentAudio.play();
+                document.getElementById('play-btn').textContent = '⏸';
+                isPlaying = true;
+            }
+        }
+
+        function stopMusic() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                document.getElementById('play-btn').textContent = '▶';
+                isPlaying = false;
+                updateTime();
+            }
+        }
+
+        function nextTrack() {
+            if (currentTrack < playlist.length - 1) {
+                playTrack(currentTrack + 1);
+            } else {
+                playTrack(0);
+            }
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function previousTrack() {
+            if (currentTrack > 0) {
+                playTrack(currentTrack - 1);
+            } else {
+                playTrack(playlist.length - 1);
+            }
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+
+        function setVolume(value) {
+            if (currentAudio) {
+                currentAudio.volume = value / 100;
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('current-track').textContent = currentTrack + 1;
+        }
+
+        function updateTime() {
+            if (currentAudio) {
+                const minutes = Math.floor(currentAudio.currentTime / 60);
+                const seconds = Math.floor(currentAudio.currentTime % 60);
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('current-time').textContent = timeString;
+            }
+        }
+
+        // Paint functionality
+        let selectedColor = '#000000';
+        let selectedTool = 'pencil';
+
+        function selectColor(color) {
+            selectedColor = color;
+            // Remove previous selection
+            document.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('selected');
+            });
+            // Add selection to clicked color
+            event.target.classList.add('selected');
+        }
+
+        function selectTool(tool) {
+            selectedTool = tool;
+            // Remove previous selection
+            document.querySelectorAll('.paint-tool-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            // Add selection to clicked tool
+            event.target.classList.add('selected');
+        }
+
+        // Initialize paint tools
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to paint tools
+            document.querySelectorAll('.paint-tool-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectTool(this.title.toLowerCase());
+                });
+            });
+        });
+
+        // Window resizing functionality
+        let isResizing = false;
+        let resizeStart = { x: 0, y: 0, width: 0, height: 0 };
+
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('resize-handle')) {
+                isResizing = true;
+                const window = e.target.closest('.window');
+                if (window) {
+                    bringToFront(window);
+                    resizeStart.x = e.clientX;
+                    resizeStart.y = e.clientY;
+                    resizeStart.width = window.offsetWidth;
+                    resizeStart.height = window.offsetHeight;
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isResizing) {
+                const window = document.querySelector('.window[style*="z-index: 200"]');
+                if (window) {
+                    const deltaX = e.clientX - resizeStart.x;
+                    const deltaY = e.clientY - resizeStart.y;
+                    const newWidth = Math.max(200, resizeStart.width + deltaX);
+                    const newHeight = Math.max(150, resizeStart.height + deltaY);
+                    
+                    window.style.width = newWidth + 'px';
+                    window.style.height = newHeight + 'px';
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isResizing = false;
+        });
+
+        function minimizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'none';
+                addToTaskbar(windowId, window.querySelector('.window-title').textContent);
+            }
+        }
+
+        function maximizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                const isMobile = window.innerWidth <= 768;
+                const taskbarHeight = isMobile ? 40 : 30;
+                const isMaximized = window.style.width === '100vw' && window.style.height === `calc(100vh - ${taskbarHeight}px)`;
+                
+                if (isMaximized) {
+                    // Restore window
+                    if (isMobile) {
+                        window.style.left = '10px';
+                        window.style.top = '50px';
+                        window.style.width = '320px';
+                        window.style.height = '220px';
+                    } else {
+                        window.style.left = '200px';
+                        window.style.top = '100px';
+                        window.style.width = '400px';
+                        window.style.height = '300px';
+                    }
+                } else {
+                    // Maximize window
+                    window.style.left = '0';
+                    window.style.top = '0';
+                    window.style.width = '100vw';
+                    window.style.height = `calc(100vh - ${taskbarHeight}px)`;
+                }
+            }
+        }
+
+        function addToTaskbar(windowId, title) {
+            const taskbarItems = document.getElementById('taskbar-items');
+            if (taskbarItems) {
+                // Check if already in taskbar
+                const existingItem = taskbarItems.querySelector(`[data-window-id="${windowId}"]`);
+                if (existingItem) {
+                    return;
+                }
+                
+                const taskbarItem = document.createElement('div');
+                taskbarItem.className = 'taskbar-item';
+                taskbarItem.setAttribute('data-window-id', windowId);
+                taskbarItem.textContent = title;
+                taskbarItem.style.cssText = `
+                    background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+                    border: 1px outset #c0c0c0;
+                    padding: 2px 8px;
+                    margin: 1px;
+                    cursor: pointer;
+                    font-size: 11px;
+                    min-width: 60px;
+                    text-align: center;
+                `;
+                
+                taskbarItem.addEventListener('click', function() {
+                    const window = document.getElementById(windowId);
+                    if (window) {
+                        if (window.style.display === 'none') {
+                            window.style.display = 'block';
+                            bringToFront(window);
+                        } else {
+                            window.style.display = 'none';
+                        }
+                    }
+                });
+                
+                taskbarItems.appendChild(taskbarItem);
+            }
+        }
+
+        function bringToFront(window) {
+            // Remove from all windows first
+            const allWindows = document.querySelectorAll('.window');
+            allWindows.forEach(w => {
+                w.style.zIndex = '100';
+            });
+            
+            // Bring this window to front
+            window.style.zIndex = '200';
+        }
+
+        // Window dragging functionality
+        let isDragging = false;
+        let dragOffset = { x: 0, y: 0 };
+        let draggedWindow = null;
+
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.closest('.window-titlebar')) {
+                draggedWindow = e.target.closest('.window');
+                if (draggedWindow) {
+                    isDragging = true;
+                    // Bring window to front
+                    const allWindows = document.querySelectorAll('.window');
+                    allWindows.forEach(w => w.style.zIndex = '100');
+                    draggedWindow.style.zIndex = '200';
+                    
+                    const rect = draggedWindow.getBoundingClientRect();
+                    dragOffset.x = e.clientX - rect.left;
+                    dragOffset.y = e.clientY - rect.top;
+                    
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging && draggedWindow) {
+                const newX = e.clientX - dragOffset.x;
+                const newY = e.clientY - dragOffset.y;
+                
+                // Keep window within bounds
+                const isMobile = window.innerWidth <= 768;
+                const taskbarHeight = isMobile ? 40 : 30;
+                const maxX = window.innerWidth - draggedWindow.offsetWidth;
+                const maxY = window.innerHeight - draggedWindow.offsetHeight - taskbarHeight;
+                
+                draggedWindow.style.left = Math.max(0, Math.min(newX, maxX)) + 'px';
+                draggedWindow.style.top = Math.max(0, Math.min(newY, maxY)) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            draggedWindow = null;
+        });
+
+        // Close start menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const startMenu = document.getElementById('start-menu');
+            const startButton = document.getElementById('start-button');
+            if (startMenu && !startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                startMenu.style.display = 'none';
+            }
+        });
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
