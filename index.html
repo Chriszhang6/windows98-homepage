@@ -1207,13 +1207,42 @@ Click on the desktop icons to explore different features!</pre>
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight - (isMobile ? 40 : 30);
                 
-                const left = (screenWidth - windowWidth) / 2;
-                const top = (screenHeight - windowHeight) / 2;
+                // 计算窗口位置 - 实现重叠效果
+                let left, top;
+                
+                if (openWindows.length === 0) {
+                    // 第一个窗口居中
+                    left = (screenWidth - windowWidth) / 2;
+                    top = (screenHeight - windowHeight) / 2;
+                } else {
+                    // 后续窗口稍微偏移，实现重叠效果
+                    const offsetX = 30; // 水平偏移
+                    const offsetY = 30; // 垂直偏移
+                    const lastWindow = openWindows[openWindows.length - 1];
+                    const lastLeft = parseInt(lastWindow.style.left) || 0;
+                    const lastTop = parseInt(lastWindow.style.top) || 0;
+                    
+                    left = lastLeft + offsetX;
+                    top = lastTop + offsetY;
+                    
+                    // 确保窗口不会超出屏幕边界
+                    if (left + windowWidth > screenWidth) {
+                        left = Math.max(0, screenWidth - windowWidth);
+                    }
+                    if (top + windowHeight > screenHeight) {
+                        top = Math.max(0, screenHeight - windowHeight);
+                    }
+                }
                 
                 window.style.left = left + 'px';
                 window.style.top = top + 'px';
                 window.style.width = windowWidth + 'px';
                 window.style.height = windowHeight + 'px';
+                
+                // 添加到打开的窗口列表
+                if (!openWindows.includes(window)) {
+                    openWindows.push(window);
+                }
                 
                 // Add to taskbar
                 addToTaskbar(windowId, window.querySelector('.window-title').textContent);
@@ -1226,6 +1255,12 @@ Click on the desktop icons to explore different features!</pre>
             const window = document.getElementById(windowId);
             if (window) {
                 window.style.display = 'none';
+                
+                // 从打开的窗口列表中移除
+                const index = openWindows.indexOf(window);
+                if (index > -1) {
+                    openWindows.splice(index, 1);
+                }
                 
                 // Remove from taskbar
                 const taskbarItem = document.querySelector(`[data-window-id="${windowId}"]`);
@@ -1594,6 +1629,7 @@ Click on the desktop icons to explore different features!</pre>
         // Window resizing functionality
         let isResizing = false;
         let resizeStart = { x: 0, y: 0, width: 0, height: 0 };
+        let openWindows = []; // 跟踪所有打开的窗口
 
         document.addEventListener('mousedown', function(e) {
             if (e.target.classList.contains('resize-handle')) {
