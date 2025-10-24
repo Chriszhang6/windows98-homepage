@@ -1034,7 +1034,13 @@
                 </div>
                 <div class="cd-player-volume">
                     <label>Volume:</label>
-                    <input type="range" id="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)" oninput="setVolume(this.value)" ontouchstart="setVolume(this.value)" ontouchend="setVolume(this.value)">
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" 
+                           onchange="setVolume(this.value)" 
+                           oninput="setVolume(this.value)" 
+                           ontouchstart="setVolume(this.value)" 
+                           ontouchend="setVolume(this.value)"
+                           ontouchmove="setVolume(this.value)"
+                           onmousemove="setVolume(this.value)">
                 </div>
                 <div class="cd-player-playlist">
                     <h4>Playlist:</h4>
@@ -1544,7 +1550,15 @@ Click on the desktop icons to explore different features!</pre>
             
             currentTrack = index;
             currentAudio = new Audio(playlist[index].file);
-            currentAudio.volume = document.getElementById('volume-slider').value / 100;
+            
+            // iPhone Safari音频初始化
+            currentAudio.preload = 'auto';
+            currentAudio.crossOrigin = 'anonymous';
+            
+            // 设置音量
+            const volumeValue = document.getElementById('volume-slider').value;
+            currentAudio.volume = volumeValue / 100;
+            console.log('Audio created with volume:', volumeValue / 100);
             
             currentAudio.onloadeddata = () => {
                 updateDisplay();
@@ -1614,8 +1628,24 @@ Click on the desktop icons to explore different features!</pre>
         }
 
         function setVolume(value) {
+            console.log('setVolume called with value:', value);
+            
             if (currentAudio) {
-                currentAudio.volume = value / 100;
+                // iPhone Safari需要特殊处理
+                try {
+                    const volume = value / 100;
+                    currentAudio.volume = volume;
+                    console.log('Volume set to:', volume);
+                    
+                    // 测试音量是否真的改变了
+                    setTimeout(() => {
+                        console.log('Current audio volume after setting:', currentAudio.volume);
+                    }, 100);
+                } catch (error) {
+                    console.log('Volume setting failed:', error);
+                }
+            } else {
+                console.log('No current audio to set volume');
             }
         }
 
