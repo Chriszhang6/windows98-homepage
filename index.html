@@ -240,6 +240,15 @@
             border-left: 1px solid #808080;
         }
 
+        /* 移动端调整大小手柄优化 */
+        @media (max-width: 768px) {
+            .resize-handle {
+                width: 20px;
+                height: 20px;
+                background: linear-gradient(135deg, #c0c0c0 0%, #c0c0c0 30%, #808080 30%, #808080 100%);
+            }
+        }
+
         .resize-handle:hover {
             background: linear-gradient(135deg, #d0d0d0 0%, #d0d0d0 30%, #909090 30%, #909090 100%);
         }
@@ -1025,7 +1034,7 @@
                 </div>
                 <div class="cd-player-volume">
                     <label>Volume:</label>
-                    <input type="range" id="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)" oninput="setVolume(this.value)" ontouchstart="setVolume(this.value)" ontouchend="setVolume(this.value)">
                 </div>
                 <div class="cd-player-playlist">
                     <h4>Playlist:</h4>
@@ -1677,6 +1686,23 @@ Click on the desktop icons to explore different features!</pre>
             }
         });
 
+        // 触摸调整大小支持（移动端）
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('resize-handle')) {
+                isResizing = true;
+                const window = e.target.closest('.window');
+                if (window) {
+                    bringToFront(window);
+                    const touch = e.touches[0];
+                    resizeStart.x = touch.clientX;
+                    resizeStart.y = touch.clientY;
+                    resizeStart.width = window.offsetWidth;
+                    resizeStart.height = window.offsetHeight;
+                    e.preventDefault();
+                }
+            }
+        });
+
         document.addEventListener('mousemove', function(e) {
             if (isResizing) {
                 const window = document.querySelector('.window[style*="z-index: 200"]');
@@ -1692,7 +1718,31 @@ Click on the desktop icons to explore different features!</pre>
             }
         });
 
+        // 触摸移动调整大小（移动端）
+        document.addEventListener('touchmove', function(e) {
+            if (isResizing) {
+                const window = document.querySelector('.window[style*="z-index: 200"]');
+                if (window) {
+                    const touch = e.touches[0];
+                    const deltaX = touch.clientX - resizeStart.x;
+                    const deltaY = touch.clientY - resizeStart.y;
+                    const newWidth = Math.max(200, resizeStart.width + deltaX);
+                    const newHeight = Math.max(150, resizeStart.height + deltaY);
+                    
+                    window.style.width = newWidth + 'px';
+                    window.style.height = newHeight + 'px';
+                    
+                    e.preventDefault(); // 防止页面滚动
+                }
+            }
+        });
+
         document.addEventListener('mouseup', function() {
+            isResizing = false;
+        });
+
+        // 触摸结束调整大小（移动端）
+        document.addEventListener('touchend', function() {
             isResizing = false;
         });
 
