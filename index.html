@@ -396,12 +396,82 @@
             font-size: 12px;
         }
 
+        /* Media Player Styles */
+        .media-player {
+            padding: 10px;
+            background: #c0c0c0;
+            border: 2px inset #c0c0c0;
+            text-align: center;
+        }
+
+        .media-player-display {
+            margin-bottom: 10px;
+        }
+
+        .media-player-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .media-player-info {
+            font-size: 11px;
+            margin-top: 8px;
+            color: #000;
+        }
+
+        .media-player-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .playlist {
             max-height: 150px;
             overflow-y: auto;
             border: 1px inset #c0c0c0;
             background: #fff;
             padding: 5px;
+        }
+
+        /* Image Viewer Styles */
+        .image-viewer {
+            padding: 10px;
+            background: #c0c0c0;
+            border: 2px inset #c0c0c0;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-viewer-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            border: 2px inset #000;
+            padding: 10px;
+            min-height: 300px;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .image-viewer-info {
+            font-size: 11px;
+            margin: 8px 0;
+            color: #000;
+        }
+
+        .image-viewer-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
         }
 
         .playlist-item {
@@ -850,6 +920,429 @@
                 font-size: 11px;
             }
         }
+
+        /* Context Menu Styles */
+        .context-menu {
+            position: fixed;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 2px 0;
+            z-index: 10000;
+            min-width: 150px;
+            display: none;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .context-menu-item {
+            padding: 4px 20px 4px 25px;
+            cursor: pointer;
+            font-size: 11px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .context-menu-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        .context-menu-item.disabled {
+            color: #808080;
+            cursor: default;
+        }
+
+        .context-menu-item.disabled:hover {
+            background: transparent;
+            color: #808080;
+        }
+
+        .context-menu-separator {
+            height: 1px;
+            background: #808080;
+            margin: 2px 0;
+        }
+
+        /* Window Animations */
+        .window {
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .window.opening {
+            animation: windowOpen 0.2s ease-out;
+        }
+
+        .window.closing {
+            animation: windowClose 0.2s ease-in;
+        }
+
+        @keyframes windowOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes windowClose {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+
+        /* System Dialog Styles */
+        .system-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .system-dialog {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            min-width: 300px;
+            max-width: 500px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .dialog-titlebar {
+            background: linear-gradient(90deg, #000080, #0000ff);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dialog-close {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        .dialog-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dialog-content {
+            padding: 15px;
+            font-size: 11px;
+        }
+
+        .dialog-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
+            vertical-align: top;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .dialog-message {
+            display: inline-block;
+            max-width: calc(100% - 60px);
+            vertical-align: top;
+        }
+
+        .dialog-buttons {
+            padding: 10px 15px;
+            text-align: right;
+            border-top: 1px solid #808080;
+            background: #c0c0c0;
+        }
+
+        .dialog-btn {
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            padding: 4px 15px;
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            min-width: 75px;
+        }
+
+        .dialog-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .dialog-btn:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        /* Control Panel Styles */
+        .control-panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .control-panel-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 2px;
+            transition: background-color 0.1s;
+        }
+
+        .control-panel-item:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .control-panel-item img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+
+        .control-panel-item span {
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .control-panel-content {
+            padding: 15px;
+        }
+
+        .control-panel-tabs {
+            display: flex;
+            border-bottom: 1px solid #808080;
+            background: #c0c0c0;
+        }
+
+        .control-panel-tab {
+            padding: 5px 15px;
+            cursor: pointer;
+            border: 1px solid #808080;
+            border-bottom: none;
+            background: #c0c0c0;
+            margin-right: 2px;
+            font-size: 11px;
+        }
+
+        .control-panel-tab.active {
+            background: #c0c0c0;
+            border-bottom: 1px solid #c0c0c0;
+            margin-bottom: -1px;
+            z-index: 1;
+        }
+
+        .control-panel-setting {
+            margin-bottom: 15px;
+        }
+
+        .control-panel-setting label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+
+        .control-panel-setting input[type="range"],
+        .control-panel-setting select {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Calculator Styles */
+        .calculator {
+            padding: 10px;
+        }
+
+        .calculator-display {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            margin-bottom: 10px;
+            border: 2px inset #000;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+        }
+
+        .calc-btn {
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .calc-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .calc-btn:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        .calc-btn.operator {
+            background: linear-gradient(to bottom, #ffa500, #ff8c00);
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(to bottom, #0000ff, #000080);
+            color: white;
+        }
+
+        /* Notepad Styles */
+        .notepad-menu {
+            background: #c0c0c0;
+            border-bottom: 1px solid #808080;
+            padding: 2px;
+            display: flex;
+            font-size: 11px;
+        }
+
+        .notepad-menu-item {
+            padding: 2px 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .notepad-menu-item:hover {
+            border: 1px inset #c0c0c0;
+        }
+
+        .notepad-textarea {
+            width: 100%;
+            height: calc(100% - 30px);
+            border: none;
+            padding: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: none;
+            background: #fff;
+        }
+
+        /* File Manager Styles */
+        .file-manager-toolbar {
+            background: #c0c0c0;
+            border-bottom: 1px solid #808080;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .file-manager-btn {
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+            border: 1px outset #c0c0c0;
+            padding: 3px 8px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .file-manager-btn:hover {
+            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+        }
+
+        .file-manager-path {
+            background: #fff;
+            border: 1px inset #c0c0c0;
+            padding: 3px 5px;
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .file-manager-content {
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 2px;
+        }
+
+        .file-item.selected {
+            background: #000080;
+            color: white;
+        }
+
+        .file-item:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .file-item.selected:hover {
+            background: #000080;
+        }
+
+        .file-item img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 3px;
+        }
+
+        .file-item span {
+            font-size: 10px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .file-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .recycle-bin-content.drag-over {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px dashed #ff0000;
+        }
+
+        .file-item.draggable {
+            cursor: grab;
+        }
+
+        .file-item.draggable:active {
+            cursor: grabbing;
+        }
+
+        /* Desktop Wallpaper Styles */
+        .desktop.wallpaper-1 { background: #008080; }
+        .desktop.wallpaper-2 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .desktop.wallpaper-3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .desktop.wallpaper-4 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .desktop.wallpaper-5 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
     </style>
 </head>
 <body>
@@ -859,19 +1352,19 @@
         <div class="desktop-icons">
             <!-- Recycle Bin -->
             <div class="desktop-icon" id="recycle-bin" onclick="openWindow('recycle-bin-window')">
-                <img src="recycle_bin.png" alt="Recycle Bin">
+                <img src="images/recycle_bin.png" alt="Recycle Bin">
                 <span>Recycle Bin</span>
             </div>
             
             <!-- My Computer -->
             <div class="desktop-icon" id="my-computer" onclick="openWindow('my-computer-window')">
-                <img src="computer.png" alt="Computer">
+                <img src="images/computer.png" alt="Computer">
                 <span>Computer</span>
             </div>
             
             <!-- About Me -->
             <div class="desktop-icon" id="about-me" onclick="openWindow('about-window')">
-                <img src="About_me.png" alt="About Me">
+                <img src="images/About_me.png" alt="About Me">
                 <span>About Me</span>
             </div>
         </div>
@@ -883,7 +1376,7 @@
     <!-- Taskbar -->
     <div class="taskbar">
         <div class="start-button" id="start-button" onclick="toggleStartMenu()">
-            <img src="start_icon.png" alt="Start" class="start-icon">
+            <img src="images/start_icon.png" alt="Start" class="start-icon">
             <span>Start</span>
         </div>
         <div class="taskbar-items" id="taskbar-items">
@@ -912,6 +1405,16 @@
             <div class="start-menu-item" onclick="openWindow('paint-window')">
                 <span>Paint</span>
             </div>
+            <div class="start-menu-item" onclick="openWindow('calculator-window')">
+                <span>Calculator</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('notepad-window')">
+                <span>Notepad</span>
+            </div>
+            <div class="start-menu-separator"></div>
+            <div class="start-menu-item" onclick="openWindow('control-panel-window')">
+                <span>Control Panel</span>
+            </div>
             <div class="start-menu-separator"></div>
             <div class="start-menu-item" onclick="shutdown()">
                 <span>Shut Down...</span>
@@ -932,11 +1435,11 @@
         <div class="window-content">
             <div class="about-files">
                 <div class="file-icon" onclick="openTextFile()">
-                    <img src="text.png" alt="About Me">
+                    <img src="images/text.png" alt="About Me">
                     <span>About Me.txt</span>
                 </div>
                 <div class="file-icon" onclick="openInternetExplorer()">
-                    <img src="internet.png" alt="Internet Explorer">
+                    <img src="images/internet.png" alt="Internet Explorer">
                     <span>Internet Explorer</span>
             </div>
             </div>
@@ -957,15 +1460,15 @@
         <div class="window-content">
             <div class="computer-drives">
                 <div class="drive-icon" onclick="openCDrive()">
-                    <img src="c_drive.png" alt="C:">
+                    <img src="images/c_drive.png" alt="C:">
                     <span>C:</span>
             </div>
                 <div class="drive-icon" onclick="openCDPlayer()">
-                    <img src="cd_player.png" alt="CD Player">
+                    <img src="images/cd_player.png" alt="CD Player">
                     <span>CD Player</span>
                 </div>
                 <div class="drive-icon" onclick="openPaint()">
-                    <img src="paint_tool.png" alt="Paint">
+                    <img src="images/paint_tool.png" alt="Paint">
                     <span>Paint</span>
                 </div>
             </div>
@@ -983,13 +1486,18 @@
                 <button class="close-btn" onclick="closeWindow('c-drive-window')">×</button>
             </div>
         </div>
-        <div class="window-content">
-            <div class="drive-content">
-                <p>This folder is empty.</p>
-                </div>
-            <div class="resize-handle"></div>
-                </div>
+        <div class="window-content" style="padding: 0; display: flex; flex-direction: column; height: calc(100% - 24px);">
+            <div class="file-manager-toolbar">
+                <button class="file-manager-btn" onclick="fileManagerBack('c-drive')">← Back</button>
+                <button class="file-manager-btn" onclick="fileManagerUp('c-drive')">↑ Up</button>
+                <input type="text" class="file-manager-path" id="c-drive-path" value="C:\" readonly>
             </div>
+            <div class="file-manager-content" id="c-drive-content">
+                <!-- Files will be loaded dynamically -->
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
     
     <!-- Recycle Bin Window -->
     <div class="window" id="recycle-bin-window" style="display: none;">
@@ -1001,9 +1509,13 @@
                 <button class="close-btn" onclick="closeWindow('recycle-bin-window')">×</button>
             </div>
         </div>
-        <div class="window-content">
-            <div class="recycle-bin-content">
-                <p>The Recycle Bin is empty.</p>
+        <div class="window-content" style="padding: 0; display: flex; flex-direction: column; height: calc(100% - 24px);">
+            <div class="file-manager-toolbar">
+                <button class="file-manager-btn" onclick="emptyRecycleBin()">Empty Recycle Bin</button>
+                <button class="file-manager-btn" onclick="restoreAllFromRecycleBin()">Restore All</button>
+            </div>
+            <div class="file-manager-content recycle-bin-content" id="recycle-bin-content">
+                <!-- Deleted files will be displayed here -->
             </div>
             <div class="resize-handle"></div>
         </div>
@@ -1053,6 +1565,74 @@
         </div>
     </div>
     
+    <!-- Windows Media Player Window -->
+    <div class="window" id="media-player-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Windows Media Player</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('media-player-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('media-player-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('media-player-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="media-player">
+                <div class="media-player-display">
+                    <div class="media-player-title">Windows Media Player</div>
+                    <video id="media-player-video" controls style="width: 100%; max-width: 320px; height: auto; background: #000; display: block; margin: 0 auto;">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="media-player-info" id="media-player-info">No video loaded</div>
+                </div>
+                <div class="media-player-controls">
+                    <button class="cd-btn" onclick="previousVideo()" title="Previous">⏮</button>
+                    <button class="cd-btn" onclick="mediaPlayerPlay()" title="Play">▶</button>
+                    <button class="cd-btn" onclick="mediaPlayerPause()" title="Pause">⏸</button>
+                    <button class="cd-btn" onclick="mediaPlayerStop()" title="Stop">⏹</button>
+                    <button class="cd-btn" onclick="nextVideo()" title="Next">⏭</button>
+                </div>
+                <div class="cd-player-volume">
+                    <label>Volume:</label>
+                    <input type="range" id="media-volume-slider" min="0" max="100" value="100" 
+                           onchange="setMediaVolume(this.value)" 
+                           oninput="setMediaVolume(this.value)">
+                </div>
+                <div class="cd-player-playlist">
+                    <h4>Playlist:</h4>
+                    <div class="playlist" id="video-playlist">
+                        <!-- Playlist items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Image Viewer Window -->
+    <div class="window" id="image-viewer-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title" id="image-viewer-title">Image Viewer</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('image-viewer-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('image-viewer-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('image-viewer-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="image-viewer">
+                <div class="image-viewer-display">
+                    <img id="image-viewer-img" src="" alt="Image" style="max-width: 100%; max-height: 100%; object-fit: contain; display: block; margin: 0 auto;">
+                </div>
+                <div class="image-viewer-info" id="image-viewer-info">No image loaded</div>
+                <div class="image-viewer-controls">
+                    <button class="cd-btn" onclick="previousImage()" title="Previous">⏮</button>
+                    <button class="cd-btn" onclick="nextImage()" title="Next">⏭</button>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
     <!-- Paint Window -->
     <div class="window" id="paint-window" style="display: none;">
         <div class="window-titlebar">
@@ -1076,28 +1656,28 @@
                 </div>
                 <div class="paint-colors">
                     <div class="color-palette">
-                        <div class="color-swatch" style="background: #000000;" onclick="selectColor('#000000')"></div>
-                        <div class="color-swatch" style="background: #800000;" onclick="selectColor('#800000')"></div>
-                        <div class="color-swatch" style="background: #008000;" onclick="selectColor('#008000')"></div>
-                        <div class="color-swatch" style="background: #808000;" onclick="selectColor('#808000')"></div>
-                        <div class="color-swatch" style="background: #000080;" onclick="selectColor('#000080')"></div>
-                        <div class="color-swatch" style="background: #800080;" onclick="selectColor('#800080')"></div>
-                        <div class="color-swatch" style="background: #008080;" onclick="selectColor('#008080')"></div>
-                        <div class="color-swatch" style="background: #C0C0C0;" onclick="selectColor('#C0C0C0')"></div>
-                        <div class="color-swatch" style="background: #808080;" onclick="selectColor('#808080')"></div>
-                        <div class="color-swatch" style="background: #FF0000;" onclick="selectColor('#FF0000')"></div>
-                        <div class="color-swatch" style="background: #00FF00;" onclick="selectColor('#00FF00')"></div>
-                        <div class="color-swatch" style="background: #FFFF00;" onclick="selectColor('#FFFF00')"></div>
-                        <div class="color-swatch" style="background: #0000FF;" onclick="selectColor('#0000FF')"></div>
-                        <div class="color-swatch" style="background: #FF00FF;" onclick="selectColor('#FF00FF')"></div>
-                        <div class="color-swatch" style="background: #00FFFF;" onclick="selectColor('#00FFFF')"></div>
-                        <div class="color-swatch" style="background: #FFFFFF;" onclick="selectColor('#FFFFFF')"></div>
+                        <div class="color-swatch" style="background: #000000;"></div>
+                        <div class="color-swatch" style="background: #800000;"></div>
+                        <div class="color-swatch" style="background: #008000;"></div>
+                        <div class="color-swatch" style="background: #808000;"></div>
+                        <div class="color-swatch" style="background: #000080;"></div>
+                        <div class="color-swatch" style="background: #800080;"></div>
+                        <div class="color-swatch" style="background: #008080;"></div>
+                        <div class="color-swatch" style="background: #C0C0C0;"></div>
+                        <div class="color-swatch" style="background: #808080;"></div>
+                        <div class="color-swatch" style="background: #FF0000;"></div>
+                        <div class="color-swatch" style="background: #00FF00;"></div>
+                        <div class="color-swatch" style="background: #FFFF00;"></div>
+                        <div class="color-swatch" style="background: #0000FF;"></div>
+                        <div class="color-swatch" style="background: #FF00FF;"></div>
+                        <div class="color-swatch" style="background: #00FFFF;"></div>
+                        <div class="color-swatch" style="background: #FFFFFF;"></div>
                     </div>
                 </div>
             </div>
             <div class="paint-canvas-container">
                 <div class="paint-canvas" id="paint-canvas">
-                    <img src="photo.jpeg" alt="Your Photo" class="paint-photo">
+                    <!-- Canvas will be created dynamically by paint.js -->
                 </div>
             </div>
             <div class="resize-handle"></div>
@@ -1185,12 +1765,427 @@ Click on the desktop icons to explore different features!</pre>
         </div>
     </div>
     
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu"></div>
+    
+    <!-- Control Panel Window -->
+    <div class="window" id="control-panel-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Control Panel</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('control-panel-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('control-panel-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('control-panel-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="control-panel-tabs">
+                <div class="control-panel-tab active" onclick="switchControlPanelTab('display', event)">Display</div>
+                <div class="control-panel-tab" onclick="switchControlPanelTab('sounds', event)">Sounds</div>
+                <div class="control-panel-tab" onclick="switchControlPanelTab('datetime', event)">Date/Time</div>
+            </div>
+            <div class="control-panel-content">
+                <div id="control-panel-display" class="control-panel-section">
+                    <div class="control-panel-setting">
+                        <label>Desktop Wallpaper:</label>
+                        <select id="wallpaper-select" onchange="changeWallpaper(this.value)">
+                            <option value="1">Teal (Default)</option>
+                            <option value="2">Purple Gradient</option>
+                            <option value="3">Pink Gradient</option>
+                            <option value="4">Blue Gradient</option>
+                            <option value="5">Green Gradient</option>
+                        </select>
+                    </div>
+                    <div class="control-panel-setting">
+                        <label>System Sounds Volume:</label>
+                        <input type="range" id="system-volume" min="0" max="100" value="50" onchange="setSystemVolume(this.value)">
+                        <span id="system-volume-value">50%</span>
+                    </div>
+                </div>
+                <div id="control-panel-sounds" class="control-panel-section" style="display: none;">
+                    <div class="control-panel-setting">
+                        <label>Enable System Sounds:</label>
+                        <input type="checkbox" id="enable-sounds" checked onchange="toggleSystemSounds(this.checked)">
+                    </div>
+                    <div class="control-panel-setting">
+                        <label>Sound Theme:</label>
+                        <select id="sound-theme-select" onchange="setSoundTheme(this.value)">
+                            <option value="classic">Classic (Windows 98 Style)</option>
+                            <option value="modern">Modern (Soft Tones)</option>
+                            <option value="retro">Retro (8-bit Style)</option>
+                            <option value="minimal">Minimal (Subtle)</option>
+                        </select>
+                    </div>
+                    <div class="control-panel-setting">
+                        <label>Test Sound:</label>
+                        <button class="dialog-btn test-sound-btn" onclick="testSystemSound()">Play Test Sound</button>
+                    </div>
+                </div>
+                <div id="control-panel-datetime" class="control-panel-section" style="display: none;">
+                    <div class="control-panel-setting">
+                        <label>Current Date:</label>
+                        <input type="date" id="system-date" onchange="setSystemDate(this.value)">
+                    </div>
+                    <div class="control-panel-setting">
+                        <label>Current Time:</label>
+                        <input type="time" id="system-time" onchange="setSystemTime(this.value)">
+                    </div>
+                    <div class="control-panel-setting">
+                        <label>Time Format:</label>
+                        <select id="time-format" onchange="setTimeFormat(this.value)">
+                            <option value="24">24-hour</option>
+                            <option value="12">12-hour</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Calculator Window -->
+    <div class="window" id="calculator-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Calculator</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('calculator-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('calculator-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('calculator-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="calculator">
+                <div class="calculator-display" id="calc-display">0</div>
+                <div class="calculator-buttons">
+                    <button class="calc-btn" onclick="calcInput('C')">C</button>
+                    <button class="calc-btn" onclick="calcInput('CE')">CE</button>
+                    <button class="calc-btn" onclick="calcInput('%')">%</button>
+                    <button class="calc-btn operator" onclick="calcInput('/')">/</button>
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    <button class="calc-btn" onclick="calcInput('±')">±</button>
+                    <button class="calc-btn" onclick="calcInput('0')">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn equals" onclick="calcInput('=')">=</button>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- Notepad Window -->
+    <div class="window" id="notepad-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title">Untitled - Notepad</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('notepad-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('notepad-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('notepad-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content" style="padding: 0; height: calc(100% - 24px);">
+            <div class="notepad-menu">
+                <div class="notepad-menu-item" onclick="notepadAction('new')">File</div>
+                <div class="notepad-menu-item" onclick="notepadAction('save')">Save</div>
+                <div class="notepad-menu-item" onclick="notepadAction('open')">Open</div>
+            </div>
+            <textarea class="notepad-textarea" id="notepad-textarea" placeholder="Start typing..."></textarea>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    <!-- File Manager Window -->
+    <div class="window" id="file-manager-window" style="display: none;">
+        <div class="window-titlebar">
+            <div class="window-title" id="file-manager-title">C:\</div>
+            <div class="window-controls">
+                <button class="minimize-btn" onclick="minimizeWindow('file-manager-window')">_</button>
+                <button class="maximize-btn" onclick="maximizeWindow('file-manager-window')">□</button>
+                <button class="close-btn" onclick="closeWindow('file-manager-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content" style="padding: 0; display: flex; flex-direction: column; height: calc(100% - 24px);">
+            <div class="file-manager-toolbar">
+                <button class="file-manager-btn" onclick="fileManagerBack()">← Back</button>
+                <button class="file-manager-btn" onclick="fileManagerUp()">↑ Up</button>
+                <input type="text" class="file-manager-path" id="file-manager-path" value="C:\" readonly>
+            </div>
+            <div class="file-manager-content" id="file-manager-content">
+                <!-- Files will be loaded dynamically -->
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+    
+    
+    <!-- Paint Application JavaScript -->
+    <script src="paint.js"></script>
     
     <script>
+        // Global variables
+        let systemSoundsEnabled = true;
+        let systemVolume = 0.5;
+        let selectedSoundTheme = 'classic'; // 'classic', 'modern', 'retro', 'minimal'
+        let currentWallpaper = '1';
+        let calcValue = '0';
+        let calcOperator = null;
+        let calcPreviousValue = null;
+        let fileSystemData = {
+            'C:\\': {
+                type: 'folder',
+                items: {
+                    'Videos': { 
+                        type: 'folder', 
+                        items: {
+                            'My Video 1.mov': { 
+                                type: 'video', 
+                                icon: 'text.png',
+                                file: 'video/IMG_4613.mov'
+                            },
+                            'My Video 2.mov': { 
+                                type: 'video', 
+                                icon: 'text.png',
+                                file: 'video/IMG_6791.mov'
+                            }
+                        }
+                    },
+                    'Photos': { 
+                        type: 'folder', 
+                        items: {
+                            // Photos will be loaded dynamically from loadImagePlaylist()
+                        }
+                    }
+                }
+            }
+        };
+        let currentFileManagerPath = 'C:\\';
+        let fileManagerHistory = [];
+        let windowStates = {}; // Store original window positions and sizes for restore
+        let recycleBinItems = []; // Store deleted files: [{name, originalPath, icon, type, deletedAt}]
+
+        // System Sound Functions with Themes
+        const soundThemes = {
+            'classic': {
+                open: { frequency: 600, duration: 0.15, type: 'square' },
+                close: { frequency: 400, duration: 0.15, type: 'square' },
+                click: { frequency: 800, duration: 0.05, type: 'square' },
+                error: { frequency: 300, duration: 0.3, type: 'sawtooth' },
+                success: { frequency: 800, duration: 0.1, type: 'square' }
+            },
+            'modern': {
+                open: { frequency: 440, duration: 0.1, type: 'sine' },
+                close: { frequency: 330, duration: 0.1, type: 'sine' },
+                click: { frequency: 1000, duration: 0.03, type: 'sine' },
+                error: { frequency: 200, duration: 0.2, type: 'sawtooth' },
+                success: { frequency: 523, duration: 0.1, type: 'sine' }
+            },
+            'retro': {
+                open: { frequency: 550, duration: 0.2, type: 'square' },
+                close: { frequency: 350, duration: 0.2, type: 'square' },
+                click: { frequency: 900, duration: 0.08, type: 'square' },
+                error: { frequency: 250, duration: 0.4, type: 'sawtooth' },
+                success: { frequency: 700, duration: 0.15, type: 'square' }
+            },
+            'minimal': {
+                open: { frequency: 500, duration: 0.05, type: 'sine' },
+                close: { frequency: 400, duration: 0.05, type: 'sine' },
+                click: { frequency: 600, duration: 0.02, type: 'sine' },
+                error: { frequency: 300, duration: 0.1, type: 'sawtooth' },
+                success: { frequency: 600, duration: 0.05, type: 'sine' }
+            }
+        };
+
+        function playSystemSound(type) {
+            if (!systemSoundsEnabled) return;
+            
+            const theme = soundThemes[selectedSoundTheme] || soundThemes['classic'];
+            const soundConfig = theme[type] || theme['click'];
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(soundConfig.frequency, audioContext.currentTime);
+            oscillator.type = soundConfig.type;
+            
+            gainNode.gain.setValueAtTime(systemVolume * 0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + soundConfig.duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + soundConfig.duration);
+        }
+
+        function toggleSystemSounds(enabled) {
+            systemSoundsEnabled = enabled;
+            localStorage.setItem('systemSoundsEnabled', enabled);
+        }
+
+        function setSystemVolume(value) {
+            systemVolume = value / 100;
+            document.getElementById('system-volume-value').textContent = value + '%';
+            localStorage.setItem('systemVolume', value);
+        }
+
+        function testSystemSound() {
+            playSystemSound('click');
+        }
+
+        function setSoundTheme(theme) {
+            selectedSoundTheme = theme;
+            localStorage.setItem('soundTheme', theme);
+            playSystemSound('success');
+        }
+
+        // Context Menu Functions
+        let contextMenu = null;
+        let contextMenuTarget = null;
+
+        function showContextMenu(event, items, target) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            contextMenuTarget = target;
+            const menu = document.getElementById('context-menu');
+            menu.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                if (item === '---') {
+                    const separator = document.createElement('div');
+                    separator.className = 'context-menu-separator';
+                    menu.appendChild(separator);
+                } else {
+                    const menuItem = document.createElement('div');
+                    menuItem.className = 'context-menu-item' + (item.disabled ? ' disabled' : '');
+                    menuItem.textContent = item.label;
+                    menuItem.onclick = item.disabled ? null : () => {
+                        hideContextMenu();
+                        if (item.action) item.action();
+                    };
+                    menu.appendChild(menuItem);
+                }
+            });
+            
+            menu.style.display = 'block';
+            menu.style.left = event.clientX + 'px';
+            menu.style.top = event.clientY + 'px';
+            
+            // Keep menu within bounds
+            setTimeout(() => {
+                const rect = menu.getBoundingClientRect();
+                if (rect.right > window.innerWidth) {
+                    menu.style.left = (window.innerWidth - rect.width) + 'px';
+                }
+                if (rect.bottom > window.innerHeight) {
+                    menu.style.top = (window.innerHeight - rect.height) + 'px';
+                }
+            }, 0);
+            
+            contextMenu = menu;
+        }
+
+        function hideContextMenu() {
+            if (contextMenu) {
+                contextMenu.style.display = 'none';
+                contextMenu = null;
+                contextMenuTarget = null;
+            }
+        }
+
+        // System Dialog Functions
+        function showSystemDialog(type, title, message, buttons, callback) {
+            playSystemSound(type === 'error' ? 'error' : 'click');
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'system-dialog-overlay';
+            
+            const dialog = document.createElement('div');
+            dialog.className = 'system-dialog';
+            
+            let icon = 'ℹ️';
+            if (type === 'error') icon = '⚠️';
+            else if (type === 'warning') icon = '⚠️';
+            else if (type === 'question') icon = '❓';
+            
+            dialog.innerHTML = `
+                <div class="dialog-titlebar">
+                    <span>${title}</span>
+                    <button class="dialog-close" onclick="this.closest('.system-dialog-overlay').remove()">×</button>
+                </div>
+                <div class="dialog-content">
+                    <span class="dialog-icon">${icon}</span>
+                    <span class="dialog-message">${message}</span>
+                </div>
+                <div class="dialog-buttons">
+                    ${buttons.map((btn, index) => 
+                        `<button class="dialog-btn" data-btn-index="${index}">${btn.text}</button>`
+                    ).join('')}
+                </div>
+            `;
+            
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+            
+            overlay.dialogCallback = callback;
+            overlay.dialogButtons = buttons;
+            
+            // Add button click handlers
+            dialog.querySelectorAll('.dialog-btn').forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    const buttonText = buttons[index].text;
+                    if (callback) {
+                        callback(buttonText, index);
+                    }
+                    overlay.remove();
+                });
+            });
+            
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                }
+            });
+        }
+
+        function confirmDialog(message, callback) {
+            showSystemDialog('question', 'Confirm', message, 
+                [{ text: 'Yes' }, { text: 'No' }],
+                (text) => callback(text === 'Yes')
+            );
+        }
+
+        function alertDialog(message, callback) {
+            showSystemDialog('info', 'Information', message,
+                [{ text: 'OK' }],
+                callback
+            );
+        }
+
+        function errorDialog(message, callback) {
+            showSystemDialog('error', 'Error', message,
+                [{ text: 'OK' }],
+                callback
+            );
+        }
+
         function toggleStartMenu() {
             const startMenu = document.getElementById('start-menu');
             if (startMenu.style.display === 'none' || startMenu.style.display === '') {
                 startMenu.style.display = 'block';
+                // 声音由全局监听器统一处理
             } else {
                 startMenu.style.display = 'none';
             }
@@ -1205,13 +2200,69 @@ Click on the desktop icons to explore different features!</pre>
                     startMenu.style.display = 'none';
                 }
                 
+                // Save original window state if not already saved
+                if (!windowStates[windowId]) {
+                    windowStates[windowId] = {
+                        left: null,
+                        top: null,
+                        width: null,
+                        height: null,
+                        isMaximized: false
+                    };
+                }
+                
+                // Add opening animation
+                window.classList.remove('closing');
+                window.classList.add('opening');
                 window.style.display = 'block';
+                
+                // Play sound only once when opening window
+                // Remove duplicate sound calls
+                
+                // Initialize window-specific content
+                if (windowId === 'c-drive-window') {
+                    loadFileManagerContent('c-drive', 'C:\\');
+                } else if (windowId === 'file-manager-window') {
+                    loadFileManagerContent('file-manager', 'C:\\');
+                } else if (windowId === 'calculator-window') {
+                    calcValue = '0';
+                    calcOperator = null;
+                    calcPreviousValue = null;
+                    document.getElementById('calc-display').textContent = '0';
+                } else if (windowId === 'recycle-bin-window') {
+                    loadRecycleBinContent();
+                } else if (windowId === 'media-player-window') {
+                    // Media Player window size will be adjusted after video loads
+                    // Use a default size for now, will be adjusted in loadVideo
+                    // Load playlist when window opens
+                    if (videoPlaylist.length === 0) {
+                        loadVideoPlaylist();
+                    }
+                }
                 
                 // Responsive window sizing
                 const isMobile = window.innerWidth <= 768;
                 let windowWidth, windowHeight;
                 
+                // Special handling for Media Player - use fixed size
+                if (windowId === 'media-player-window') {
                 if (isMobile) {
+                        windowWidth = 360;
+                        windowHeight = 500;
+                    } else {
+                        windowWidth = 420; // Fixed width for Media Player
+                        windowHeight = 550; // Fixed height for Media Player
+                    }
+                } else if (windowId === 'image-viewer-window') {
+                    // Fixed size for Image Viewer
+                    if (isMobile) {
+                        windowWidth = 360;
+                        windowHeight = 450;
+                    } else {
+                        windowWidth = 500; // Fixed width for Image Viewer
+                        windowHeight = 500; // Fixed height for Image Viewer
+                    }
+                } else if (isMobile) {
                     windowWidth = Math.min(320, window.innerWidth - 20);
                     windowHeight = Math.min(220, window.innerHeight - 100);
                 } else {
@@ -1280,6 +2331,14 @@ Click on the desktop icons to explore different features!</pre>
                 window.style.width = windowWidth + 'px';
                 window.style.height = windowHeight + 'px';
                 
+                // Save original position and size if not already saved
+                if (!windowStates[windowId].width || windowStates[windowId].isMaximized === false) {
+                    windowStates[windowId].left = left;
+                    windowStates[windowId].top = top;
+                    windowStates[windowId].width = windowWidth;
+                    windowStates[windowId].height = windowHeight;
+                }
+                
                 // 添加到打开的窗口列表
                 if (!openWindows.includes(window)) {
                     openWindows.push(window);
@@ -1289,13 +2348,24 @@ Click on the desktop icons to explore different features!</pre>
                 addToTaskbar(windowId, window.querySelector('.window-title').textContent);
                 // Bring to front
                 bringToFront(window);
+                
+                // Play sound after window is fully set up (only once)
+                playSystemSound('open');
             }
         }
 
         function closeWindow(windowId) {
             const window = document.getElementById(windowId);
             if (window) {
-                window.style.display = 'none';
+                // Add closing animation
+                window.classList.remove('opening');
+                window.classList.add('closing');
+                playSystemSound('close');
+                
+                setTimeout(() => {
+                    window.style.display = 'none';
+                    window.classList.remove('closing');
+                }, 200);
                 
                 // 从打开的窗口列表中移除
                 const index = openWindows.indexOf(window);
@@ -1306,6 +2376,14 @@ Click on the desktop icons to explore different features!</pre>
                 // 特殊处理：关闭CD Player时停止音乐
                 if (windowId === 'cd-player-window') {
                     stopMusic();
+                }
+                
+                // 特殊处理：关闭Media Player时停止视频
+                if (windowId === 'media-player-window') {
+                    if (currentVideo) {
+                        currentVideo.pause();
+                        currentVideo.currentTime = 0;
+                    }
                 }
                 
                 // Remove from taskbar
@@ -1327,6 +2405,10 @@ Click on the desktop icons to explore different features!</pre>
 
         function openPaint() {
             openWindow('paint-window');
+            // Initialize paint app when window opens
+            if (typeof initializePaint === 'function') {
+                initializePaint();
+            }
         }
 
         function openTextFile() {
@@ -1462,37 +2544,16 @@ Click on the desktop icons to explore different features!</pre>
             console.log('*重启音效*');
         }
 
-        // 键盘点击声音效果
-        function playClickSound() {
-            // 创建音频上下文
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // 创建振荡器
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            // 连接节点
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // 设置音调（模拟键盘点击声）
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.type = 'square';
-            
-            // 设置音量包络（快速衰减）
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
-            // 播放声音
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.1);
-        }
-
         // 为所有按钮添加点击声音
         function addClickSounds() {
             // 为所有按钮添加点击事件
             document.addEventListener('click', function(event) {
                 const target = event.target;
+                
+                // 跳过测试按钮（它有自己的声音处理）
+                if (target.classList.contains('test-sound-btn')) {
+                    return;
+                }
                 
                 // 检查是否是按钮或可点击元素
                 if (target.tagName === 'BUTTON' || 
@@ -1508,15 +2569,321 @@ Click on the desktop icons to explore different features!</pre>
                     target.classList.contains('drive-icon') ||
                     target.classList.contains('file-icon')) {
                     
-                    playClickSound();
+                    // 使用用户选择的系统声音主题
+                    playSystemSound('click');
                 }
             });
+        }
+
+        // Image Viewer functionality (defined before DOMContentLoaded)
+        let currentImageFile = null;
+        let currentImageName = '';
+        let currentImageIndex = -1;
+        let imagePlaylist = [];
+
+        function loadImagePlaylist() {
+            // Load image files from photo folder
+            const isFileProtocol = window.location.protocol === 'file:';
+            const photoPath = isFileProtocol ? 'photo/' : './photo/';
+            
+            // All photo files in the photo folder (updated with renamed files)
+            const photoFiles = [
+                'IMG_0367.jpeg',
+                'IMG_1691.JPG',
+                'IMG_1800.JPG',
+                'IMG_1971.JPG',
+                'IMG_7206.jpg',
+                'Ita.JPG',
+                'MT.jpeg'
+            ];
+            
+            // Build playlist from photo files
+            imagePlaylist = photoFiles.map(filename => ({
+                name: filename,
+                file: photoPath + filename
+            }));
+            
+            // Also update the file system to include all photos
+            if (fileSystemData['C:\\'] && fileSystemData['C:\\'].items && fileSystemData['C:\\'].items['Photos']) {
+                const photosFolder = fileSystemData['C:\\'].items['Photos'];
+                photosFolder.items = {};
+                
+                photoFiles.forEach(filename => {
+                    photosFolder.items[filename] = {
+                        type: 'image',
+                        icon: 'text.png',
+                        file: photoPath + filename
+                    };
+                });
+            }
+            
+            console.log('Image playlist loaded with', imagePlaylist.length, 'photos');
+            console.log('Photos:', photoFiles);
+        }
+
+        function openImageViewer(imageFile, imageName) {
+            // Try to find image in playlist
+            const index = imagePlaylist.findIndex(img => img.file === imageFile);
+            
+            if (index >= 0) {
+                // Image found in playlist, use playlist index
+                viewImageFromPlaylist(index);
+            } else {
+                // Image not in playlist, use direct load
+                currentImageFile = imageFile;
+                currentImageName = imageName;
+                currentImageIndex = -1;
+                loadImage(imageFile, imageName);
+            }
+            
+            openWindow('image-viewer-window');
+        }
+
+        function viewImageFromPlaylist(index) {
+            if (index < 0 || index >= imagePlaylist.length) return;
+            
+            currentImageIndex = index;
+            const image = imagePlaylist[index];
+            currentImageFile = image.file;
+            currentImageName = image.name;
+            
+            loadImage(image.file, image.name);
+        }
+
+        function loadImage(imageFile, imageName) {
+            const imageElement = document.getElementById('image-viewer-img');
+            const infoElement = document.getElementById('image-viewer-info');
+            const titleElement = document.getElementById('image-viewer-title');
+            
+            if (!imageElement) return;
+            
+            // Set image source
+            imageElement.src = imageFile;
+            
+            // Update info and title
+            infoElement.textContent = imageName;
+            if (titleElement) {
+                titleElement.textContent = imageName + ' - Image Viewer';
+            }
+            
+            // Handle image load
+            imageElement.onload = () => {
+                infoElement.textContent = `${imageName} (${imageElement.naturalWidth} × ${imageElement.naturalHeight})`;
+            };
+            
+            imageElement.onerror = () => {
+                console.error('Error loading image:', imageFile);
+                infoElement.textContent = `Error loading image: ${imageName}`;
+                alertDialog(`Error loading image file: ${imageName}\n\nPlease check the file path.`);
+            };
+        }
+
+        function previousImage() {
+            if (imagePlaylist.length === 0) return;
+            
+            if (currentImageIndex <= 0) {
+                viewImageFromPlaylist(imagePlaylist.length - 1);
+            } else {
+                viewImageFromPlaylist(currentImageIndex - 1);
+            }
+        }
+
+        function nextImage() {
+            if (imagePlaylist.length === 0) return;
+            
+            if (currentImageIndex >= imagePlaylist.length - 1) {
+                viewImageFromPlaylist(0);
+            } else {
+                viewImageFromPlaylist(currentImageIndex + 1);
+            }
         }
 
         // 页面加载完成后添加点击声音
         document.addEventListener('DOMContentLoaded', function() {
             addClickSounds();
+            // Load image playlist
+            loadImagePlaylist();
         });
+
+        // Media Player functionality
+        let currentVideo = null;
+        let currentVideoFile = null;
+        let currentVideoName = '';
+        let currentVideoIndex = -1;
+        let videoPlaylist = [];
+
+        function loadVideoPlaylist() {
+            // Load video files from video folder
+            const isFileProtocol = window.location.protocol === 'file:';
+            const videoPath = isFileProtocol ? 'video/' : './video/';
+            
+            videoPlaylist = [
+                { name: 'My Video 1', file: videoPath + 'IMG_4613.mov' },
+                { name: 'My Video 2', file: videoPath + 'IMG_6791.mov' }
+            ];
+            
+            console.log('Video playlist loaded with path prefix:', videoPath);
+            
+            const playlistDiv = document.getElementById('video-playlist');
+            if (!playlistDiv) return;
+            
+            playlistDiv.innerHTML = '';
+            
+            videoPlaylist.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                item.textContent = `${index + 1}. ${video.name}`;
+                item.onclick = () => {
+                    playVideoFromPlaylist(index);
+                };
+                playlistDiv.appendChild(item);
+            });
+        }
+
+        function playVideoFromPlaylist(index) {
+            if (index < 0 || index >= videoPlaylist.length) return;
+            
+            currentVideoIndex = index;
+            const video = videoPlaylist[index];
+            currentVideoFile = video.file;
+            currentVideoName = video.name;
+            
+            loadVideo(video.file, video.name);
+            
+            // Update active item in playlist
+            document.querySelectorAll('#video-playlist .playlist-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        }
+
+        function previousVideo() {
+            if (videoPlaylist.length === 0) return;
+            
+            if (currentVideoIndex <= 0) {
+                playVideoFromPlaylist(videoPlaylist.length - 1);
+            } else {
+                playVideoFromPlaylist(currentVideoIndex - 1);
+            }
+        }
+
+        function nextVideo() {
+            if (videoPlaylist.length === 0) return;
+            
+            if (currentVideoIndex >= videoPlaylist.length - 1) {
+                playVideoFromPlaylist(0);
+            } else {
+                playVideoFromPlaylist(currentVideoIndex + 1);
+            }
+        }
+
+        function openMediaPlayer(videoFile, videoName) {
+            // Try to find video in playlist
+            const index = videoPlaylist.findIndex(v => v.file === videoFile);
+            
+            if (index >= 0) {
+                // Video found in playlist, use playlist index
+                playVideoFromPlaylist(index);
+            } else {
+                // Video not in playlist, use direct load
+                currentVideoFile = videoFile;
+                currentVideoName = videoName;
+                currentVideoIndex = -1;
+                loadVideo(videoFile, videoName);
+            }
+            
+            openWindow('media-player-window');
+        }
+
+        function loadVideo(videoFile, videoName) {
+            const videoElement = document.getElementById('media-player-video');
+            const infoElement = document.getElementById('media-player-info');
+            const mediaPlayerWindow = document.getElementById('media-player-window');
+            
+            if (!videoElement) return;
+            
+            // Set video source
+            videoElement.src = videoFile;
+            videoElement.load();
+            
+            // Update info
+            infoElement.textContent = `Playing: ${videoName}`;
+            
+            // Set up event listeners
+            videoElement.onloadedmetadata = () => {
+                infoElement.textContent = `Playing: ${videoName} (${formatTime(videoElement.duration)})`;
+                // Window size is now fixed, no need to adjust
+            };
+            
+            videoElement.onerror = (e) => {
+                console.error('Error loading video:', e);
+                infoElement.textContent = `Error loading video: ${videoName}`;
+                alertDialog(`Error loading video file: ${videoName}\n\nPlease check the file path.`);
+            };
+            
+            // Auto-play next video when current video ends
+            videoElement.onended = () => {
+                if (currentVideoIndex >= 0 && videoPlaylist.length > 0) {
+                    nextVideo();
+                    // Auto-play the next video
+                    setTimeout(() => {
+                        if (currentVideo) {
+                            currentVideo.play().catch(error => {
+                                console.error('Error auto-playing next video:', error);
+                            });
+                        }
+                    }, 500);
+                }
+            };
+            
+            currentVideo = videoElement;
+        }
+
+        // Function removed - window size is now fixed
+        // All videos will display at a consistent size (max-width: 320px)
+
+        function mediaPlayerPlay() {
+            if (currentVideo) {
+                currentVideo.play().catch(error => {
+                    console.error('Error playing video:', error);
+                });
+            }
+        }
+
+        function mediaPlayerPause() {
+            if (currentVideo) {
+                currentVideo.pause();
+            }
+        }
+
+        function mediaPlayerStop() {
+            if (currentVideo) {
+                currentVideo.pause();
+                currentVideo.currentTime = 0;
+            }
+        }
+
+        function mediaPlayerOpen() {
+            // For now, just reload the current video
+            // In a real implementation, this could open a file dialog
+            if (currentVideoFile) {
+                loadVideo(currentVideoFile, currentVideoName);
+            } else {
+                alertDialog('Please select a video file from C: drive\\Videos folder.');
+            }
+        }
+
+        function setMediaVolume(value) {
+            if (currentVideo) {
+                currentVideo.volume = value / 100;
+            }
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '00:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
 
         // CD Player functionality
         let currentAudio = null;
@@ -1525,11 +2892,19 @@ Click on the desktop icons to explore different features!</pre>
         let isPlaying = false;
 
         function loadPlaylist() {
-            // 这里可以添加你的MP3文件
+            // Load MP3 files from music folder
+            // Determine the correct path based on how the page is loaded
+            // For file:// protocol, use relative path without ./
+            // For http:// protocol, use ./music/ or music/
+            const isFileProtocol = window.location.protocol === 'file:';
+            const musicPath = isFileProtocol ? 'music/' : './music/';
+            
             playlist = [
-                { name: "Frankie Valli - Can't Take My Eyes Off You", file: "Frankie Valli - Can't Take My Eyes Off You.mp3" },
-                { name: "Les Champs-Elysées", file: "Les Champs-Elysées.mp3" }
+                { name: "Frankie Valli - Can't Take My Eyes Off You", file: musicPath + "Frankie Valli - Can't Take My Eyes Off You.mp3" },
+                { name: "Les Champs-Elysées", file: musicPath + "Les Champs-Elysées.mp3" }
             ];
+            
+            console.log('Playlist loaded with path prefix:', musicPath);
             
             const playlistDiv = document.getElementById('playlist');
             playlistDiv.innerHTML = '';
@@ -1538,30 +2913,61 @@ Click on the desktop icons to explore different features!</pre>
                 const item = document.createElement('div');
                 item.className = 'playlist-item';
                 item.textContent = `${index + 1}. ${song.name}`;
-                item.onclick = () => playTrack(index);
+                item.onclick = () => {
+                    playTrack(index, true);
+                };
                 playlistDiv.appendChild(item);
             });
         }
 
-        function playTrack(index) {
+        function playTrack(index, shouldAutoPlay = false) {
             if (currentAudio) {
                 currentAudio.pause();
             }
             
             currentTrack = index;
-            currentAudio = new Audio(playlist[index].file);
+            const audioPath = playlist[index].file;
+            console.log('Loading audio from path:', audioPath);
+            console.log('Current page URL:', window.location.href);
+            console.log('Base path:', window.location.pathname);
             
-            // iPhone Safari音频初始化
+            currentAudio = new Audio(audioPath);
+            
+            // iPhone Safari audio initialization
             currentAudio.preload = 'auto';
-            currentAudio.crossOrigin = 'anonymous';
+            // Remove crossOrigin for local files - it may cause CORS issues
+            // currentAudio.crossOrigin = 'anonymous';
             
-            // 设置音量
+            // Set volume
             const volumeValue = document.getElementById('volume-slider').value;
             currentAudio.volume = volumeValue / 100;
             console.log('Audio created with volume:', volumeValue / 100);
             
+            // Error handling - more detailed error information
+            currentAudio.onerror = (e) => {
+                console.error('Error loading audio:', e);
+                console.error('Failed to load:', audioPath);
+                console.error('Audio error details:', {
+                    code: currentAudio.error?.code,
+                    message: currentAudio.error?.message,
+                    networkState: currentAudio.networkState,
+                    readyState: currentAudio.readyState
+                });
+                alert(`Error loading audio file: ${playlist[index].name}\n\nPath: ${audioPath}\n\nPlease check the file path in the browser console.`);
+            };
+            
             currentAudio.onloadeddata = () => {
                 updateDisplay();
+                // Auto-play if requested
+                if (shouldAutoPlay) {
+                    currentAudio.play().then(() => {
+                        isPlaying = true;
+                        document.getElementById('play-btn').textContent = '⏸';
+                    }).catch(error => {
+                        console.error('Error playing audio:', error);
+                        isPlaying = false;
+                    });
+                }
             };
             
             currentAudio.ontimeupdate = () => {
@@ -1580,7 +2986,8 @@ Click on the desktop icons to explore different features!</pre>
 
         function togglePlay() {
             if (!currentAudio) {
-                playTrack(0);
+                // Play first track and auto-play when loaded
+                playTrack(0, true);
                 return;
             }
             
@@ -1589,9 +2996,16 @@ Click on the desktop icons to explore different features!</pre>
                 document.getElementById('play-btn').textContent = '▶';
                 isPlaying = false;
             } else {
-                currentAudio.play();
-                document.getElementById('play-btn').textContent = '⏸';
-                isPlaying = true;
+                // Try to play, handle promise for better error handling
+                currentAudio.play().then(() => {
+                    document.getElementById('play-btn').textContent = '⏸';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    // If play fails, try reloading the audio
+                    const currentIndex = currentTrack;
+                    playTrack(currentIndex, true);
+                });
             }
         }
 
@@ -1606,24 +3020,20 @@ Click on the desktop icons to explore different features!</pre>
         }
 
         function nextTrack() {
+            const wasPlaying = isPlaying;
             if (currentTrack < playlist.length - 1) {
-                playTrack(currentTrack + 1);
+                playTrack(currentTrack + 1, wasPlaying);
             } else {
-                playTrack(0);
-            }
-            if (isPlaying) {
-                currentAudio.play();
+                playTrack(0, wasPlaying);
             }
         }
 
         function previousTrack() {
+            const wasPlaying = isPlaying;
             if (currentTrack > 0) {
-                playTrack(currentTrack - 1);
+                playTrack(currentTrack - 1, wasPlaying);
             } else {
-                playTrack(playlist.length - 1);
-            }
-            if (isPlaying) {
-                currentAudio.play();
+                playTrack(playlist.length - 1, wasPlaying);
             }
         }
 
@@ -1659,42 +3069,14 @@ Click on the desktop icons to explore different features!</pre>
                 const seconds = Math.floor(currentAudio.currentTime % 60);
                 const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 document.getElementById('current-time').textContent = timeString;
+            } else {
+                // Initialize time display to 00:00
+                document.getElementById('current-time').textContent = '00:00';
             }
         }
 
-        // Paint functionality
-        let selectedColor = '#000000';
-        let selectedTool = 'pencil';
-
-        function selectColor(color) {
-            selectedColor = color;
-            // Remove previous selection
-            document.querySelectorAll('.color-swatch').forEach(swatch => {
-                swatch.classList.remove('selected');
-            });
-            // Add selection to clicked color
-            event.target.classList.add('selected');
-        }
-
-        function selectTool(tool) {
-            selectedTool = tool;
-            // Remove previous selection
-            document.querySelectorAll('.paint-tool-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            // Add selection to clicked tool
-            event.target.classList.add('selected');
-        }
-
-        // Initialize paint tools
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click handlers to paint tools
-            document.querySelectorAll('.paint-tool-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    selectTool(this.title.toLowerCase());
-                });
-            });
-        });
+        // Paint functionality is now handled by paint.js
+        // The paint.js file is loaded separately and handles all paint interactions
 
         // Window resizing functionality
         let isResizing = false;
@@ -1744,6 +3126,13 @@ Click on the desktop icons to explore different features!</pre>
                     
                     window.style.width = newWidth + 'px';
                     window.style.height = newHeight + 'px';
+                    
+                    // Update window state when resizing (if not maximized)
+                    const windowId = window.id;
+                    if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
+                        windowStates[windowId].width = newWidth + 'px';
+                        windowStates[windowId].height = newHeight + 'px';
+                    }
                 }
             }
         });
@@ -1761,6 +3150,13 @@ Click on the desktop icons to explore different features!</pre>
                     
                     window.style.width = newWidth + 'px';
                     window.style.height = newHeight + 'px';
+                    
+                    // Update window state when resizing (if not maximized)
+                    const windowId = window.id;
+                    if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
+                        windowStates[windowId].width = newWidth + 'px';
+                        windowStates[windowId].height = newHeight + 'px';
+                    }
                     
                     e.preventDefault(); // 防止页面滚动
                 }
@@ -1794,27 +3190,44 @@ Click on the desktop icons to explore different features!</pre>
             if (window) {
                 const isMobile = window.innerWidth <= 768;
                 const taskbarHeight = isMobile ? 40 : 30;
-                const isMaximized = window.style.width === '100vw' && window.style.height === `calc(100vh - ${taskbarHeight}px)`;
+                
+                // Initialize window state if not exists
+                if (!windowStates[windowId]) {
+                    windowStates[windowId] = {
+                        left: window.style.left || '200px',
+                        top: window.style.top || '100px',
+                        width: window.style.width || '400px',
+                        height: window.style.height || '300px',
+                        isMaximized: false
+                    };
+                }
+                
+                const state = windowStates[windowId];
+                const isMaximized = state.isMaximized || 
+                    (window.style.width === '100vw' && window.style.height === `calc(100vh - ${taskbarHeight}px)`);
                 
                 if (isMaximized) {
-                    // Restore window
-                    if (isMobile) {
-                        window.style.left = '10px';
-                        window.style.top = '50px';
-                        window.style.width = '320px';
-                        window.style.height = '220px';
-                    } else {
-                        window.style.left = '200px';
-                        window.style.top = '100px';
-                        window.style.width = '400px';
-                        window.style.height = '300px';
-                    }
+                    // Restore window to original size and position
+                    window.style.left = state.left || (isMobile ? '10px' : '200px');
+                    window.style.top = state.top || (isMobile ? '50px' : '100px');
+                    window.style.width = state.width || (isMobile ? '320px' : '400px');
+                    window.style.height = state.height || (isMobile ? '220px' : '300px');
+                    state.isMaximized = false;
+                    // 声音由全局监听器统一处理
                 } else {
+                    // Save current state before maximizing
+                    state.left = window.style.left;
+                    state.top = window.style.top;
+                    state.width = window.style.width;
+                    state.height = window.style.height;
+                    
                     // Maximize window
                     window.style.left = '0';
                     window.style.top = '0';
                     window.style.width = '100vw';
                     window.style.height = `calc(100vh - ${taskbarHeight}px)`;
+                    state.isMaximized = true;
+                    // 声音由全局监听器统一处理
                 }
             }
         }
@@ -1928,6 +3341,13 @@ Click on the desktop icons to explore different features!</pre>
                 
                 draggedWindow.style.left = Math.max(0, Math.min(newX, maxX)) + 'px';
                 draggedWindow.style.top = Math.max(0, Math.min(newY, maxY)) + 'px';
+                
+                // Update window state position when dragging (if not maximized)
+                const windowId = draggedWindow.id;
+                if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
+                    windowStates[windowId].left = draggedWindow.style.left;
+                    windowStates[windowId].top = draggedWindow.style.top;
+                }
             }
         });
 
@@ -1946,6 +3366,13 @@ Click on the desktop icons to explore different features!</pre>
                 
                 draggedWindow.style.left = Math.max(0, Math.min(newX, maxX)) + 'px';
                 draggedWindow.style.top = Math.max(0, Math.min(newY, maxY)) + 'px';
+                
+                // Update window state position when dragging (if not maximized)
+                const windowId = draggedWindow.id;
+                if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
+                    windowStates[windowId].left = draggedWindow.style.left;
+                    windowStates[windowId].top = draggedWindow.style.top;
+                }
                 
                 e.preventDefault(); // 防止页面滚动
             }
@@ -1969,13 +3396,783 @@ Click on the desktop icons to explore different features!</pre>
             if (startMenu && !startMenu.contains(e.target) && !startButton.contains(e.target)) {
                 startMenu.style.display = 'none';
             }
+            
+            // Close context menu when clicking outside
+            if (!e.target.closest('.context-menu') && !e.target.closest('.context-menu-item')) {
+                hideContextMenu();
+            }
+        });
+
+        // Calculator Functions
+        function calcInput(value) {
+            // 声音由全局监听器统一处理
+            const display = document.getElementById('calc-display');
+            
+            if (value >= '0' && value <= '9' || value === '.') {
+                if (calcValue === '0' || calcOperator === '=') {
+                    calcValue = value === '.' ? '0.' : value;
+                } else {
+                    calcValue += value;
+                }
+                display.textContent = calcValue;
+            } else if (value === 'C') {
+                calcValue = '0';
+                calcOperator = null;
+                calcPreviousValue = null;
+                display.textContent = '0';
+            } else if (value === 'CE') {
+                calcValue = '0';
+                display.textContent = '0';
+            } else if (value === '±') {
+                calcValue = (parseFloat(calcValue) * -1).toString();
+                display.textContent = calcValue;
+            } else if (value === '+' || value === '-' || value === '*' || value === '/') {
+                if (calcPreviousValue !== null && calcOperator) {
+                    calcValue = calculate(calcPreviousValue, calcOperator, parseFloat(calcValue)).toString();
+                    display.textContent = calcValue;
+                }
+                calcPreviousValue = parseFloat(calcValue);
+                calcOperator = value;
+                calcValue = '0';
+            } else if (value === '=') {
+                if (calcPreviousValue !== null && calcOperator) {
+                    calcValue = calculate(calcPreviousValue, calcOperator, parseFloat(calcValue)).toString();
+                    display.textContent = calcValue;
+                    calcOperator = '=';
+                    calcPreviousValue = null;
+                }
+            } else if (value === '%') {
+                calcValue = (parseFloat(calcValue) / 100).toString();
+                display.textContent = calcValue;
+            }
+        }
+
+        function calculate(a, op, b) {
+            switch(op) {
+                case '+': return a + b;
+                case '-': return a - b;
+                case '*': return a * b;
+                case '/': return b !== 0 ? a / b : 0;
+                default: return b;
+            }
+        }
+
+        // Notepad Functions
+        function notepadAction(action) {
+            // 声音由全局监听器统一处理
+            const textarea = document.getElementById('notepad-textarea');
+            
+            if (action === 'new') {
+                confirmDialog('Create a new document? All unsaved changes will be lost.', (confirmed) => {
+                    if (confirmed) {
+                        textarea.value = '';
+                        document.querySelector('#notepad-window .window-title').textContent = 'Untitled - Notepad';
+                    }
+                });
+            } else if (action === 'save') {
+                const content = textarea.value;
+                if (content.trim() === '') {
+                    errorDialog('Cannot save empty document.');
+                    return;
+                }
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'document.txt';
+                a.click();
+                URL.revokeObjectURL(url);
+                alertDialog('Document saved successfully!');
+            } else if (action === 'open') {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'text/plain';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            textarea.value = e.target.result;
+                            document.querySelector('#notepad-window .window-title').textContent = file.name + ' - Notepad';
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                input.click();
+            }
+        }
+
+        // File Manager Functions
+        function loadFileManagerContent(managerId, path) {
+            const container = managerId === 'c-drive' ? 
+                document.getElementById('c-drive-content') : 
+                document.getElementById('file-manager-content');
+            const pathInput = managerId === 'c-drive' ?
+                document.getElementById('c-drive-path') :
+                document.getElementById('file-manager-path');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            pathInput.value = path;
+            
+            const pathData = getPathData(path);
+            if (pathData && pathData.items) {
+                const items = Object.keys(pathData.items);
+                
+                if (items.length === 0) {
+                    // Show empty folder message
+                    const emptyMsg = document.createElement('div');
+                    emptyMsg.style.cssText = `
+                        text-align: center;
+                        padding: 50px 20px;
+                        color: #808080;
+                        font-size: 12px;
+                        grid-column: 1 / -1;
+                    `;
+                    emptyMsg.textContent = 'This folder is empty.';
+                    container.appendChild(emptyMsg);
+                } else {
+                    items.forEach(name => {
+                        const item = pathData.items[name];
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'file-item draggable';
+                        fileItem.draggable = true;
+                        fileItem.onclick = () => {
+                            if (item.type === 'folder') {
+                                navigateToPath(managerId, path + name + '\\');
+                            } else if (item.type === 'video') {
+                                // Open video in Media Player
+                                openMediaPlayer(item.file, name);
+                            } else if (item.type === 'image') {
+                                // Open image in Image Viewer
+                                openImageViewer(item.file, name);
+                            } else {
+                                alertDialog(`File: ${name}\n\nThis is a simulated file system.`);
+                            }
+                        };
+                        
+                        const icon = document.createElement('img');
+                        if (item.type === 'folder') {
+                            icon.src = 'images/c_drive.png';
+                        } else if (item.type === 'video') {
+                            icon.src = 'images/cd_player.png'; // Use CD player icon for videos
+                        } else if (item.type === 'image') {
+                            icon.src = 'images/paint_tool.png'; // Use paint icon for images
+                        } else {
+                            icon.src = 'images/' + (item.icon || 'text.png');
+                        }
+                        fileItem.appendChild(icon);
+                        
+                        const label = document.createElement('span');
+                        label.textContent = name;
+                        fileItem.appendChild(label);
+                        
+                        container.appendChild(fileItem);
+                    });
+                }
+            }
+        }
+
+        function getPathData(path) {
+            if (path === 'C:\\') {
+                return fileSystemData['C:\\'];
+            }
+            const parts = path.split('\\').filter(p => p);
+            let current = fileSystemData['C:\\'];
+            for (let i = 1; i < parts.length; i++) {
+                if (current && current.items && current.items[parts[i]]) {
+                    current = current.items[parts[i]];
+                } else {
+                    return null;
+                }
+            }
+            return current;
+        }
+
+        function navigateToPath(managerId, path) {
+            fileManagerHistory.push(currentFileManagerPath);
+            currentFileManagerPath = path;
+            loadFileManagerContent(managerId, path);
+            // No sound here - only play sound when opening window, not when navigating
+        }
+
+        function fileManagerBack(managerId) {
+            if (!managerId) managerId = 'file-manager';
+            if (fileManagerHistory.length > 0) {
+                currentFileManagerPath = fileManagerHistory.pop();
+                loadFileManagerContent(managerId, currentFileManagerPath);
+            }
+        }
+
+        function fileManagerUp(managerId) {
+            if (!managerId) managerId = 'file-manager';
+            if (currentFileManagerPath !== 'C:\\') {
+                const parts = currentFileManagerPath.split('\\').filter(p => p);
+                parts.pop();
+                const newPath = parts.length > 0 ? parts.join('\\') + '\\' : 'C:\\';
+                navigateToPath(managerId, newPath);
+            }
+        }
+
+        // Control Panel Functions
+        function switchControlPanelTab(tab, event) {
+            document.querySelectorAll('.control-panel-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.control-panel-section').forEach(s => s.style.display = 'none');
+            
+            if (event && event.target) {
+            event.target.classList.add('active');
+            } else {
+                // 如果没有 event，通过 tab 名称找到对应的 tab
+                document.querySelectorAll('.control-panel-tab').forEach(t => {
+                    if (t.textContent.trim() === tab.charAt(0).toUpperCase() + tab.slice(1) || 
+                        t.textContent.trim() === 'Date/Time' && tab === 'datetime') {
+                        t.classList.add('active');
+                    }
+                });
+            }
+            document.getElementById('control-panel-' + tab).style.display = 'block';
+            // 声音由全局监听器统一处理
+        }
+
+        function changeWallpaper(value) {
+            currentWallpaper = value;
+            const desktop = document.querySelector('.desktop');
+            desktop.className = 'desktop wallpaper-' + value;
+            localStorage.setItem('wallpaper', value);
+            playSystemSound('success');
+        }
+
+        function setSystemDate(value) {
+            // This is a demo - in real implementation would update system date
+            alertDialog('Date updated to: ' + value);
+            playSystemSound('success');
+        }
+
+        function setSystemTime(value) {
+            // This is a demo - in real implementation would update system time
+            alertDialog('Time updated to: ' + value);
+            playSystemSound('success');
+        }
+
+        function setTimeFormat(value) {
+            localStorage.setItem('timeFormat', value);
+            updateClock();
+            playSystemSound('success');
+        }
+
+        // Recycle Bin Functions
+        function loadRecycleBinContent() {
+            const container = document.getElementById('recycle-bin-content');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (recycleBinItems.length === 0) {
+                // Show empty folder message styled like Windows 98
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.cssText = `
+                    text-align: center;
+                    padding: 50px 20px;
+                    color: #808080;
+                    font-size: 12px;
+                `;
+                emptyMsg.textContent = 'This folder is empty.';
+                container.appendChild(emptyMsg);
+            } else {
+                // Display deleted items
+                recycleBinItems.forEach((item, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item draggable';
+                    fileItem.setAttribute('data-item-index', index);
+                    fileItem.draggable = false; // Don't allow dragging from recycle bin
+                    
+                    fileItem.onclick = (e) => {
+                        // Show properties or restore option
+                        showRecycleBinItemMenu(e, item, index);
+                    };
+                    
+                    // Also support right-click context menu
+                    fileItem.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        showRecycleBinItemMenu(e, item, index);
+                    });
+                    
+                    const icon = document.createElement('img');
+                    icon.src = 'images/' + (item.icon || 'text.png');
+                    icon.alt = item.name;
+                    fileItem.appendChild(icon);
+                    
+                    const label = document.createElement('span');
+                    label.textContent = item.name;
+                    fileItem.appendChild(label);
+                    
+                    container.appendChild(fileItem);
+                });
+            }
+        }
+
+        function deleteToRecycleBin(fileName, filePath, icon, fileType) {
+            // Add to recycle bin
+            recycleBinItems.push({
+                name: fileName,
+                originalPath: filePath,
+                icon: icon || 'text.png',
+                type: fileType || 'file',
+                deletedAt: new Date().toISOString()
+            });
+            
+            // Actually remove the file from file system
+            removeFileFromFileSystem(fileName, filePath);
+            
+            // Save to localStorage
+            localStorage.setItem('recycleBinItems', JSON.stringify(recycleBinItems));
+            
+            // Refresh file manager display if it's showing the deleted file's location
+            const cDriveWindow = document.getElementById('c-drive-window');
+            const fileManagerWindow = document.getElementById('file-manager-window');
+            
+            if (cDriveWindow && cDriveWindow.style.display !== 'none') {
+                loadFileManagerContent('c-drive', currentFileManagerPath);
+            }
+            if (fileManagerWindow && fileManagerWindow.style.display !== 'none') {
+                loadFileManagerContent('file-manager', currentFileManagerPath);
+            }
+            
+            // Update recycle bin icon if window is open
+            const recycleBinWindow = document.getElementById('recycle-bin-window');
+            if (recycleBinWindow && recycleBinWindow.style.display !== 'none') {
+                loadRecycleBinContent();
+            }
+            
+            playSystemSound('success');
+        }
+
+        function removeFileFromFileSystem(fileName, filePath) {
+            // Get the path data where the file should be
+            const pathData = getPathData(filePath);
+            
+            if (pathData && pathData.items && pathData.items[fileName]) {
+                // Get file type before deleting
+                const fileItem = pathData.items[fileName];
+                const fileType = fileItem.type || 'file';
+                
+                // Remove the file from the file system
+                delete pathData.items[fileName];
+                
+                // Also remove from image playlist if it's an image
+                if (fileType === 'image') {
+                    const index = imagePlaylist.findIndex(img => img.name === fileName);
+                    if (index >= 0) {
+                        imagePlaylist.splice(index, 1);
+                        // If current image was deleted, reset
+                        if (currentImageIndex === index) {
+                            currentImageIndex = -1;
+                            currentImageFile = null;
+                            currentImageName = '';
+                        } else if (currentImageIndex > index) {
+                            // Adjust current index if file before it was deleted
+                            currentImageIndex--;
+                        }
+                    }
+                }
+                
+                // Also remove from video playlist if it's a video
+                if (fileType === 'video') {
+                    const index = videoPlaylist.findIndex(v => v.name === fileName);
+                    if (index >= 0) {
+                        videoPlaylist.splice(index, 1);
+                        // If current video was deleted, stop it
+                        if (currentVideoIndex === index) {
+                            if (currentVideo) {
+                                currentVideo.pause();
+                                currentVideo.currentTime = 0;
+                            }
+                            currentVideoIndex = -1;
+                            currentVideoFile = null;
+                            currentVideoName = '';
+                        } else if (currentVideoIndex > index) {
+                            // Adjust current index if file before it was deleted
+                            currentVideoIndex--;
+                        }
+                    }
+                }
+                
+                console.log(`File "${fileName}" removed from file system at path: ${filePath}`);
+            } else {
+                console.warn(`Could not find file "${fileName}" at path "${filePath}" to delete`);
+            }
+        }
+
+        function restoreFromRecycleBin(index) {
+            if (index < 0 || index >= recycleBinItems.length) return;
+            
+            const item = recycleBinItems[index];
+            
+            // Restore file to original location in file system
+            restoreFileToFileSystem(item.name, item.originalPath, item.icon, item.type);
+            
+            // Remove from recycle bin
+            recycleBinItems.splice(index, 1);
+            
+            // Save to localStorage
+            localStorage.setItem('recycleBinItems', JSON.stringify(recycleBinItems));
+            
+            // Refresh file manager display
+            const cDriveWindow = document.getElementById('c-drive-window');
+            const fileManagerWindow = document.getElementById('file-manager-window');
+            
+            if (cDriveWindow && cDriveWindow.style.display !== 'none') {
+                loadFileManagerContent('c-drive', currentFileManagerPath);
+            }
+            if (fileManagerWindow && fileManagerWindow.style.display !== 'none') {
+                loadFileManagerContent('file-manager', currentFileManagerPath);
+            }
+            
+            // Update display
+            loadRecycleBinContent();
+            
+            playSystemSound('success');
+            alertDialog(`File "${item.name}" has been restored.`);
+        }
+
+        function restoreFileToFileSystem(fileName, originalPath, icon, fileType) {
+            // Get the path data where the file should be restored
+            const pathData = getPathData(originalPath);
+            
+            if (pathData && pathData.items) {
+                // Restore the file to the file system
+                let fileData = {
+                    type: fileType || 'file',
+                    icon: icon || 'text.png'
+                };
+                
+                // If it's an image, restore it properly
+                if (fileType === 'image' || fileName.match(/\.(jpeg|jpg|png|gif)$/i)) {
+                    fileData.type = 'image';
+                    // Determine the file path based on folder
+                    const isFileProtocol = window.location.protocol === 'file:';
+                    const photoPath = isFileProtocol ? 'photo/' : './photo/';
+                    fileData.file = photoPath + fileName;
+                    
+                    // Add back to image playlist if not already there
+                    const existsInPlaylist = imagePlaylist.find(img => img.name === fileName);
+                    if (!existsInPlaylist) {
+                        imagePlaylist.push({
+                            name: fileName,
+                            file: fileData.file
+                        });
+                    }
+                } else if (fileType === 'video' || fileName.match(/\.(mov|mp4|avi)$/i)) {
+                    fileData.type = 'video';
+                    // Determine the file path based on folder
+                    const isFileProtocol = window.location.protocol === 'file:';
+                    const videoPath = isFileProtocol ? 'video/' : './video/';
+                    fileData.file = videoPath + fileName;
+                    
+                    // Add back to video playlist if not already there
+                    const existsInPlaylist = videoPlaylist.find(v => v.name === fileName);
+                    if (!existsInPlaylist) {
+                        videoPlaylist.push({
+                            name: fileName,
+                            file: fileData.file
+                        });
+                    }
+                }
+                
+                pathData.items[fileName] = fileData;
+                console.log(`File "${fileName}" restored to file system at path: ${originalPath}`);
+            } else {
+                console.warn(`Could not restore file "${fileName}" to path "${originalPath}"`);
+            }
+        }
+
+        function emptyRecycleBin() {
+            if (recycleBinItems.length === 0) {
+                alertDialog('The Recycle Bin is already empty.');
+                return;
+            }
+            
+            confirmDialog(`Are you sure you want to permanently delete ${recycleBinItems.length} item(s)?`, (confirmed) => {
+                if (confirmed) {
+                    recycleBinItems = [];
+                    localStorage.setItem('recycleBinItems', JSON.stringify(recycleBinItems));
+                    loadRecycleBinContent();
+                    playSystemSound('success');
+                    alertDialog('The Recycle Bin has been emptied.');
+                }
+            });
+        }
+
+        function restoreAllFromRecycleBin() {
+            if (recycleBinItems.length === 0) {
+                alertDialog('The Recycle Bin is empty.');
+                return;
+            }
+            
+            const count = recycleBinItems.length;
+            
+            // Restore all files to their original locations
+            recycleBinItems.forEach(item => {
+                restoreFileToFileSystem(item.name, item.originalPath, item.icon, item.type);
+            });
+            
+            recycleBinItems = [];
+            localStorage.setItem('recycleBinItems', JSON.stringify(recycleBinItems));
+            
+            // Refresh file manager display
+            const cDriveWindow = document.getElementById('c-drive-window');
+            const fileManagerWindow = document.getElementById('file-manager-window');
+            
+            if (cDriveWindow && cDriveWindow.style.display !== 'none') {
+                loadFileManagerContent('c-drive', currentFileManagerPath);
+            }
+            if (fileManagerWindow && fileManagerWindow.style.display !== 'none') {
+                loadFileManagerContent('file-manager', currentFileManagerPath);
+            }
+            
+            loadRecycleBinContent();
+            playSystemSound('success');
+            alertDialog(`${count} item(s) have been restored.`);
+        }
+
+        function showRecycleBinItemMenu(event, item, index) {
+            const menuItems = [
+                { label: 'Restore', action: () => restoreFromRecycleBin(index) },
+                { label: 'Delete', action: () => {
+                    confirmDialog(`Permanently delete "${item.name}"?`, (confirmed) => {
+                        if (confirmed) {
+                            recycleBinItems.splice(index, 1);
+                            localStorage.setItem('recycleBinItems', JSON.stringify(recycleBinItems));
+                            loadRecycleBinContent();
+                            playSystemSound('success');
+                        }
+                    });
+                }},
+                '---',
+                { label: 'Properties', action: () => {
+                    alertDialog(`Name: ${item.name}\nOriginal Location: ${item.originalPath}\nType: ${item.type}\nDeleted: ${new Date(item.deletedAt).toLocaleString()}`);
+                }}
+            ];
+            
+            // Use the actual event or create a fake one
+            const menuEvent = event || {
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2,
+                preventDefault: () => {},
+                stopPropagation: () => {}
+            };
+            
+            showContextMenu(menuEvent, menuItems, null);
+        }
+
+        // Drag and Drop Functions
+        function setupDragAndDrop() {
+            // Handle drag start on file items (in file manager and C: drive)
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.closest('.file-item') && !e.target.closest('.recycle-bin-content .file-item')) {
+                    const fileItem = e.target.closest('.file-item');
+                    if (!fileItem.draggable) return; // Only allow dragging if draggable is set
+                    
+                    const fileName = fileItem.querySelector('span').textContent;
+                    const filePath = currentFileManagerPath;
+                    const iconImg = fileItem.querySelector('img');
+                    const icon = iconImg ? iconImg.src.split('/').pop() : 'text.png';
+                    
+                    // Get file type from file system
+                    const pathData = getPathData(filePath);
+                    let fileType = 'file';
+                    if (pathData && pathData.items && pathData.items[fileName]) {
+                        fileType = pathData.items[fileName].type || 'file';
+                    } else if (fileName.match(/\.(jpeg|jpg|png|gif)$/i)) {
+                        fileType = 'image';
+                    } else if (fileName.match(/\.(mov|mp4|avi)$/i)) {
+                        fileType = 'video';
+                    }
+                    
+                    e.dataTransfer.setData('text/plain', JSON.stringify({
+                        name: fileName,
+                        path: filePath,
+                        icon: icon,
+                        type: fileType
+                    }));
+                    
+                    e.dataTransfer.effectAllowed = 'move';
+                    fileItem.classList.add('dragging');
+                    playSystemSound('click');
+                }
+            });
+            
+            document.addEventListener('dragend', function(e) {
+                if (e.target.closest('.file-item')) {
+                    e.target.closest('.file-item').classList.remove('dragging');
+                }
+            });
+            
+            // Handle drop on recycle bin content
+            setTimeout(() => {
+                const recycleBinContent = document.getElementById('recycle-bin-content');
+                if (recycleBinContent) {
+                    recycleBinContent.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        recycleBinContent.classList.add('drag-over');
+                    });
+                    
+                    recycleBinContent.addEventListener('dragleave', function(e) {
+                        recycleBinContent.classList.remove('drag-over');
+                    });
+                    
+                    recycleBinContent.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        recycleBinContent.classList.remove('drag-over');
+                        
+                        try {
+                            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                            deleteToRecycleBin(data.name, data.path, data.icon, data.type);
+                            
+                            // Remove from original location (visual feedback)
+                            const draggedItem = document.querySelector('.file-item.dragging');
+                            if (draggedItem) {
+                                draggedItem.style.opacity = '0';
+                                setTimeout(() => {
+                                    if (draggedItem.parentNode) {
+                                        draggedItem.parentNode.removeChild(draggedItem);
+                                    }
+                                }, 300);
+                            }
+                        } catch (error) {
+                            console.error('Error processing drop:', error);
+                        }
+                    });
+                }
+                
+                // Also allow dropping on recycle bin icon on desktop
+                const recycleBinIcon = document.getElementById('recycle-bin');
+                if (recycleBinIcon) {
+                    recycleBinIcon.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                    });
+                    
+                    recycleBinIcon.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        try {
+                            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                            deleteToRecycleBin(data.name, data.path, data.icon, data.type);
+                            
+                            // Visual feedback
+                            recycleBinIcon.style.transform = 'scale(1.1)';
+                            setTimeout(() => {
+                                recycleBinIcon.style.transform = 'scale(1)';
+                            }, 200);
+                        } catch (error) {
+                            console.error('Error processing drop:', error);
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        // Context Menu Setup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Desktop icon context menu
+            document.querySelectorAll('.desktop-icon').forEach(icon => {
+                icon.addEventListener('contextmenu', (e) => {
+                    const iconId = icon.id;
+                    const menuItems = [
+                        { label: 'Open', action: () => {
+                            if (iconId === 'recycle-bin') openWindow('recycle-bin-window');
+                            else if (iconId === 'my-computer') openWindow('my-computer-window');
+                            else if (iconId === 'about-me') openWindow('about-window');
+                        }},
+                        '---',
+                        { label: 'Properties', action: () => {
+                            alertDialog(`Properties for ${icon.querySelector('span').textContent}\n\nThis is a Windows 98 style icon.`);
+                        }}
+                    ];
+                    showContextMenu(e, menuItems, icon);
+                });
+            });
+            
+            // Taskbar item context menu
+            document.addEventListener('contextmenu', (e) => {
+                if (e.target.closest('.taskbar-item')) {
+                    const taskbarItem = e.target.closest('.taskbar-item');
+                    const windowId = taskbarItem.getAttribute('data-window-id');
+                    const menuItems = [
+                        { label: 'Restore', action: () => {
+                            const win = document.getElementById(windowId);
+                            if (win && win.style.display === 'none') {
+                                win.style.display = 'block';
+                                bringToFront(win);
+                            }
+                        }},
+                        { label: 'Minimize', action: () => {
+                            minimizeWindow(windowId);
+                        }},
+                        { label: 'Maximize', action: () => {
+                            maximizeWindow(windowId);
+                        }},
+                        '---',
+                        { label: 'Close', action: () => {
+                            closeWindow(windowId);
+                        }}
+                    ];
+                    showContextMenu(e, menuItems, taskbarItem);
+                }
+            });
+            
+            // Load saved settings
+            const savedWallpaper = localStorage.getItem('wallpaper');
+            if (savedWallpaper) {
+                changeWallpaper(savedWallpaper);
+                document.getElementById('wallpaper-select').value = savedWallpaper;
+            }
+            
+            const savedVolume = localStorage.getItem('systemVolume');
+            if (savedVolume) {
+                setSystemVolume(parseInt(savedVolume));
+                document.getElementById('system-volume').value = savedVolume;
+            }
+            
+            const savedSoundsEnabled = localStorage.getItem('systemSoundsEnabled');
+            if (savedSoundsEnabled !== null) {
+                systemSoundsEnabled = savedSoundsEnabled === 'true';
+                document.getElementById('enable-sounds').checked = systemSoundsEnabled;
+            }
+            
+            const savedSoundTheme = localStorage.getItem('soundTheme');
+            if (savedSoundTheme) {
+                selectedSoundTheme = savedSoundTheme;
+                const themeSelect = document.getElementById('sound-theme-select');
+                if (themeSelect) {
+                    themeSelect.value = savedSoundTheme;
+                }
+            }
+            
+            // Load recycle bin items from localStorage
+            const savedRecycleBin = localStorage.getItem('recycleBinItems');
+            if (savedRecycleBin) {
+                try {
+                    recycleBinItems = JSON.parse(savedRecycleBin);
+                } catch (e) {
+                    recycleBinItems = [];
+                }
+            }
+            
+            // Setup drag and drop
+            setupDragAndDrop();
         });
 
         // Update clock
         function updateClock() {
             const now = new Date();
+            const timeFormat = localStorage.getItem('timeFormat') || '24';
+            const hour12 = timeFormat === '12';
+            
             const timeString = now.toLocaleTimeString('en-US', {
-                hour12: false,
+                hour12: hour12,
                 hour: '2-digit',
                 minute: '2-digit'
             });
