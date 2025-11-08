@@ -1867,7 +1867,7 @@ Click on the desktop icons to explore different features!</pre>
                         <label>Sound Theme:</label>
                         <select id="sound-theme-select" onchange="setSoundTheme(this.value)">
                             <option value="classic">Classic (Windows 98 Style)</option>
-                            <option value="modern">Modern (Soft Tones)</option>
+                            <option value="modern" selected>Modern (Soft Tones)</option>
                             <option value="retro">Retro (8-bit Style)</option>
                             <option value="minimal">Minimal (Subtle)</option>
                         </select>
@@ -1991,7 +1991,7 @@ Click on the desktop icons to explore different features!</pre>
         // Global variables
         let systemSoundsEnabled = true;
         let systemVolume = 0.5;
-        let selectedSoundTheme = 'classic'; // 'classic', 'modern', 'retro', 'minimal'
+        let selectedSoundTheme = 'modern'; // 'classic', 'modern', 'retro', 'minimal'
         let currentWallpaper = '1';
         let calcValue = '0';
         let calcOperator = null;
@@ -2064,7 +2064,7 @@ Click on the desktop icons to explore different features!</pre>
         function playSystemSound(type) {
             if (!systemSoundsEnabled) return;
             
-            const theme = soundThemes[selectedSoundTheme] || soundThemes['classic'];
+            const theme = soundThemes[selectedSoundTheme] || soundThemes['modern'];
             const soundConfig = theme[type] || theme['click'];
             
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
