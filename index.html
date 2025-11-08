@@ -50,11 +50,21 @@
             cursor: pointer;
             padding: 8px;
             border-radius: 2px;
-            transition: background-color 0.1s;
+            transition: background-color 0.1s, border 0.1s;
+            border: 1px solid transparent;
         }
 
         .desktop-icon:hover {
             background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .desktop-icon:focus {
+            outline: none;
+        }
+
+        .desktop-icon.selected {
+            background: rgba(0, 0, 128, 0.35);
+            border: 1px dotted #ffffff;
         }
 
         .desktop-icon img {
@@ -158,13 +168,34 @@
             padding: 2px 0;
         }
 
+        .start-menu-section {
+            padding: 4px 0;
+        }
+
+        .start-menu-section-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #000;
+            padding: 4px 12px;
+        }
+
         .start-menu-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 8px;
             padding: 4px 8px;
             cursor: pointer;
             font-size: 11px;
+        }
+
+        .start-menu-item-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .start-menu-item span {
+            flex: 1;
         }
 
         .start-menu-item:hover {
@@ -188,8 +219,8 @@
         }
 
         .window-titlebar {
-            background: linear-gradient(90deg, #000080, #0000ff);
-            color: white;
+            background: linear-gradient(90deg, #b5b5b5, #8b8b8b);
+            color: #2c2c2c;
             padding: 4px 8px;
             display: flex;
             justify-content: space-between;
@@ -197,6 +228,11 @@
             cursor: move;
             font-weight: bold;
             font-size: 11px;
+        }
+
+        .window.active .window-titlebar {
+            background: linear-gradient(90deg, #000080, #0000ff);
+            color: white;
         }
 
         .window-title {
@@ -762,10 +798,16 @@
         @media (max-width: 768px) {
             body {
                 font-size: 14px;
+                overflow: auto;
+                height: auto;
+                min-height: 100vh;
             }
 
             .desktop {
-                height: calc(100vh - 40px);
+                position: relative;
+                min-height: calc(100vh - 40px);
+                height: auto;
+                overflow: visible;
             }
 
             .desktop-icons {
@@ -1351,19 +1393,19 @@
         <!-- Desktop Icons -->
         <div class="desktop-icons">
             <!-- Recycle Bin -->
-            <div class="desktop-icon" id="recycle-bin" onclick="openWindow('recycle-bin-window')">
+            <div class="desktop-icon" id="recycle-bin" data-window="recycle-bin-window" tabindex="0">
                 <img src="images/recycle_bin.png" alt="Recycle Bin">
                 <span>Recycle Bin</span>
             </div>
-            
+
             <!-- My Computer -->
-            <div class="desktop-icon" id="my-computer" onclick="openWindow('my-computer-window')">
+            <div class="desktop-icon" id="my-computer" data-window="my-computer-window" tabindex="0">
                 <img src="images/computer.png" alt="Computer">
                 <span>Computer</span>
             </div>
-            
+
             <!-- About Me -->
-            <div class="desktop-icon" id="about-me" onclick="openWindow('about-window')">
+            <div class="desktop-icon" id="about-me" data-window="about-window" tabindex="0">
                 <img src="images/About_me.png" alt="About Me">
                 <span>About Me</span>
             </div>
@@ -1374,7 +1416,7 @@
     </div>
     
     <!-- Taskbar -->
-    <div class="taskbar">
+    <div class="taskbar" id="taskbar">
         <div class="start-button" id="start-button" onclick="toggleStartMenu()">
             <img src="images/start_icon.png" alt="Start" class="start-icon">
             <span>Start</span>
@@ -1393,30 +1435,44 @@
             <span>Windows 98</span>
         </div>
         <div class="start-menu-items">
-            <div class="start-menu-item" onclick="openWindow('my-computer-window')">
-                <span>Computer</span>
-            </div>
-            <div class="start-menu-item" onclick="openWindow('about-window')">
-                <span>About Me</span>
-            </div>
-            <div class="start-menu-item" onclick="openWindow('cd-player-window'); loadPlaylist();">
-                <span>CD Player</span>
-            </div>
-            <div class="start-menu-item" onclick="openWindow('paint-window')">
-                <span>Paint</span>
-            </div>
-            <div class="start-menu-item" onclick="openWindow('calculator-window')">
-                <span>Calculator</span>
-            </div>
-            <div class="start-menu-item" onclick="openWindow('notepad-window')">
-                <span>Notepad</span>
+            <div class="start-menu-section">
+                <div class="start-menu-section-title">Programs</div>
+                <div class="start-menu-item" data-window="my-computer-window">
+                    <img src="images/computer.png" alt="Computer" class="start-menu-item-icon">
+                    <span>Computer</span>
+                </div>
+                <div class="start-menu-item" data-window="about-window">
+                    <img src="images/About_me.png" alt="About Me" class="start-menu-item-icon">
+                    <span>About Me</span>
+                </div>
+                <div class="start-menu-item" data-window="cd-player-window" data-action="loadPlaylist">
+                    <img src="images/cd_player.png" alt="CD Player" class="start-menu-item-icon">
+                    <span>CD Player</span>
+                </div>
+                <div class="start-menu-item" data-window="paint-window">
+                    <img src="images/paint_tool.png" alt="Paint" class="start-menu-item-icon">
+                    <span>Paint</span>
+                </div>
+                <div class="start-menu-item" data-window="calculator-window">
+                    <img src="images/text.png" alt="Calculator" class="start-menu-item-icon">
+                    <span>Calculator</span>
+                </div>
+                <div class="start-menu-item" data-window="notepad-window">
+                    <img src="images/text.png" alt="Notepad" class="start-menu-item-icon">
+                    <span>Notepad</span>
+                </div>
             </div>
             <div class="start-menu-separator"></div>
-            <div class="start-menu-item" onclick="openWindow('control-panel-window')">
-                <span>Control Panel</span>
+            <div class="start-menu-section">
+                <div class="start-menu-section-title">Settings</div>
+                <div class="start-menu-item" data-window="control-panel-window">
+                    <img src="images/internet.png" alt="Control Panel" class="start-menu-item-icon">
+                    <span>Control Panel</span>
+                </div>
             </div>
             <div class="start-menu-separator"></div>
-            <div class="start-menu-item" onclick="shutdown()">
+            <div class="start-menu-item" data-action="shutdown">
+                <img src="images/start_icon.png" alt="Shut Down" class="start-menu-item-icon">
                 <span>Shut Down...</span>
             </div>
         </div>
@@ -2365,6 +2421,7 @@ Click on the desktop icons to explore different features!</pre>
                 setTimeout(() => {
                     window.style.display = 'none';
                     window.classList.remove('closing');
+                    window.classList.remove('active');
                 }, 200);
                 
                 // 从打开的窗口列表中移除
@@ -2539,8 +2596,11 @@ Click on the desktop icons to explore different features!</pre>
             });
             
             // 显示任务栏
-            document.getElementById('taskbar').style.display = 'flex';
-            
+            const taskbar = document.getElementById('taskbar');
+            if (taskbar) {
+                taskbar.style.display = 'flex';
+            }
+
             console.log('*重启音效*');
         }
 
@@ -2703,6 +2763,8 @@ Click on the desktop icons to explore different features!</pre>
             addClickSounds();
             // Load image playlist
             loadImagePlaylist();
+            setupDesktopIconInteractions();
+            setupStartMenuInteractions();
         });
 
         // Media Player functionality
@@ -3176,8 +3238,9 @@ Click on the desktop icons to explore different features!</pre>
             const window = document.getElementById(windowId);
             if (window) {
                 window.style.display = 'none';
+                window.classList.remove('active');
                 addToTaskbar(windowId, window.querySelector('.window-title').textContent);
-                
+
                 // 特殊处理：最小化CD Player时暂停音乐（用户可以通过任务栏重新打开）
                 if (windowId === 'cd-player-window' && currentAudio && !currentAudio.paused) {
                     currentAudio.pause();
@@ -3272,15 +3335,111 @@ Click on the desktop icons to explore different features!</pre>
             }
         }
 
-        function bringToFront(window) {
-            // Remove from all windows first
+        function bringToFront(win) {
+            if (!win) return;
+
             const allWindows = document.querySelectorAll('.window');
             allWindows.forEach(w => {
                 w.style.zIndex = '100';
+                w.classList.remove('active');
             });
-            
-            // Bring this window to front
-            window.style.zIndex = '200';
+
+            win.style.zIndex = '200';
+            win.classList.add('active');
+
+            const index = openWindows.indexOf(win);
+            if (index > -1) {
+                openWindows.splice(index, 1);
+                openWindows.push(win);
+            }
+        }
+
+        function clearDesktopIconSelection() {
+            document.querySelectorAll('.desktop-icon.selected').forEach(icon => {
+                icon.classList.remove('selected');
+            });
+        }
+
+        function setupDesktopIconInteractions() {
+            const icons = document.querySelectorAll('.desktop-icon');
+            const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+            icons.forEach(icon => {
+                icon.addEventListener('click', (event) => {
+                    clearDesktopIconSelection();
+                    icon.classList.add('selected');
+                    icon.focus();
+
+                    if (isCoarsePointer) {
+                        const windowId = icon.getAttribute('data-window');
+                        if (windowId) {
+                            openWindow(windowId);
+                        }
+                    }
+
+                    event.stopPropagation();
+                });
+
+                icon.addEventListener('dblclick', (event) => {
+                    if (isCoarsePointer) {
+                        return;
+                    }
+
+                    const windowId = icon.getAttribute('data-window');
+                    if (windowId) {
+                        openWindow(windowId);
+                    }
+                    event.stopPropagation();
+                });
+
+                icon.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        const windowId = icon.getAttribute('data-window');
+                        if (windowId) {
+                            openWindow(windowId);
+                        }
+                    }
+                });
+            });
+
+            const desktop = document.querySelector('.desktop');
+            if (desktop) {
+                desktop.addEventListener('click', (event) => {
+                    if (!event.target.closest('.desktop-icon')) {
+                        clearDesktopIconSelection();
+                    }
+                });
+            }
+        }
+
+        function setupStartMenuInteractions() {
+            const actions = {
+                loadPlaylist: () => loadPlaylist(),
+                shutdown: () => shutdown()
+            };
+
+            const startMenu = document.getElementById('start-menu');
+
+            document.querySelectorAll('.start-menu-item').forEach(item => {
+                item.addEventListener('click', (event) => {
+                    const windowId = item.getAttribute('data-window');
+                    const action = item.getAttribute('data-action');
+
+                    if (windowId) {
+                        openWindow(windowId);
+                    }
+
+                    if (action && typeof actions[action] === 'function') {
+                        actions[action]();
+                    }
+
+                    if (startMenu) {
+                        startMenu.style.display = 'none';
+                    }
+
+                    event.stopPropagation();
+                });
+            });
         }
 
         // Window dragging functionality
@@ -3293,15 +3452,12 @@ Click on the desktop icons to explore different features!</pre>
                 draggedWindow = e.target.closest('.window');
                 if (draggedWindow) {
                     isDragging = true;
-                    // Bring window to front
-                    const allWindows = document.querySelectorAll('.window');
-                    allWindows.forEach(w => w.style.zIndex = '100');
-                    draggedWindow.style.zIndex = '200';
-                    
+                    bringToFront(draggedWindow);
+
                     const rect = draggedWindow.getBoundingClientRect();
                     dragOffset.x = e.clientX - rect.left;
                     dragOffset.y = e.clientY - rect.top;
-                    
+
                     e.preventDefault();
                 }
             }
@@ -3313,11 +3469,8 @@ Click on the desktop icons to explore different features!</pre>
                 draggedWindow = e.target.closest('.window');
                 if (draggedWindow) {
                     isDragging = true;
-                    // Bring window to front
-                    const allWindows = document.querySelectorAll('.window');
-                    allWindows.forEach(w => w.style.zIndex = '100');
-                    draggedWindow.style.zIndex = '200';
-                    
+                    bringToFront(draggedWindow);
+
                     const rect = draggedWindow.getBoundingClientRect();
                     const touch = e.touches[0];
                     dragOffset.x = touch.clientX - rect.left;
@@ -4079,6 +4232,10 @@ Click on the desktop icons to explore different features!</pre>
             // Desktop icon context menu
             document.querySelectorAll('.desktop-icon').forEach(icon => {
                 icon.addEventListener('contextmenu', (e) => {
+                    clearDesktopIconSelection();
+                    icon.classList.add('selected');
+                    icon.focus();
+
                     const iconId = icon.id;
                     const menuItems = [
                         { label: 'Open', action: () => {
