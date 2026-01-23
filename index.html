@@ -794,6 +794,200 @@
             font-size: 12px;
         }
 
+        .ie-hero {
+            position: relative;
+            padding: 20px;
+            border: 1px solid #000080;
+            background: linear-gradient(145deg, rgba(0, 0, 128, 0.18), rgba(255, 255, 255, 0.08));
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .ie-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(transparent 0 8px, rgba(0, 0, 0, 0.05) 8px 16px);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .ie-hero-badge {
+            display: inline-block;
+            background: #000080;
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #ffffff;
+            box-shadow: 2px 2px 0 #000040;
+        }
+
+        .ie-hero h2 {
+            margin: 10px 0;
+            color: #000080;
+            font-size: 18px;
+        }
+
+        .ie-hero p {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .ie-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ie-chip {
+            border: 1px solid #000080;
+            background: #f8f8ff;
+            padding: 6px 14px;
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .ie-chip:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 2px 2px 0 #000040;
+        }
+
+        .ie-chip.ghost {
+            background: transparent;
+            border-style: dashed;
+        }
+
+        .ie-hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .ie-stat-card {
+            flex: 1 1 120px;
+            border: 1px solid #808080;
+            background: #fff;
+            padding: 10px;
+            min-width: 130px;
+        }
+
+        .ie-stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #4a4a4a;
+            letter-spacing: 1px;
+        }
+
+        .ie-stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000080;
+        }
+
+        .ie-section {
+            margin-bottom: 25px;
+        }
+
+        .ie-section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000080;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-left: 3px solid #000080;
+            padding-left: 6px;
+        }
+
+        .ie-project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .ie-project-card {
+            border: 1px solid #808080;
+            background: #f4f4f4;
+            padding: 12px;
+            cursor: pointer;
+            transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .ie-project-card:hover {
+            border-color: #000080;
+            transform: translate(-2px, -2px);
+            box-shadow: 3px 3px 0 #000040;
+        }
+
+        .ie-card-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .ie-card-title {
+            font-size: 13px;
+        }
+
+        .ie-card-pill {
+            font-size: 10px;
+            padding: 2px 6px;
+            background: #000080;
+            color: #fff;
+        }
+
+        .ie-project-card p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .ie-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ie-card-meta span {
+            border: 1px solid #c0c0c0;
+            padding: 2px 6px;
+            background: #fff;
+        }
+
+        .ie-mini-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .ie-mini-link {
+            flex: 1 1 200px;
+            border: 1px dashed #808080;
+            padding: 10px;
+            background: #fff;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .ie-mini-link:hover {
+            border-color: #000080;
+            background: #f0f8ff;
+        }
+
         /* Mobile Responsive Design */
         @media (max-width: 768px) {
             body {
@@ -1796,26 +1990,86 @@ Click on the desktop icons to explore different features!</pre>
                     <span id="ie-status">Done</span>
                 </div>
                 <div class="ie-page-content">
-                    <h2>Chris Zhang's Professional Profile</h2>
-                    <div class="ie-links">
-                        <div class="ie-link" onclick="setAddress('https://www.linkedin.com/in/chris-y-zhang/')">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
-                            <span>LinkedIn Profile</span>
+                        <div class="ie-hero">
+                            <div class="ie-hero-badge">Now shipping</div>
+                            <h2>Chris Zhang · Creative Engineer</h2>
+                            <p>Designing delightful, Windows-inspired experiences across web, ML, and immersive media. I blend playful UI with solid engineering to demo ideas fast.</p>
+                            <div class="ie-hero-actions">
+                                <div class="ie-chip" onclick="openExternal('https://www.linkedin.com/in/chris-y-zhang/')">Open LinkedIn</div>
+                                <div class="ie-chip ghost" onclick="openExternal('https://github.com/Chriszhang6')">View GitHub</div>
+                            </div>
+                            <div class="ie-hero-stats">
+                                <div class="ie-stat-card">
+                                    <div class="ie-stat-label">Playable builds</div>
+                                    <div class="ie-stat-value">4</div>
+                                </div>
+                                <div class="ie-stat-card">
+                                    <div class="ie-stat-label">Stack</div>
+                                    <div class="ie-stat-value">Python / JS</div>
+                                </div>
+                                <div class="ie-stat-card">
+                                    <div class="ie-stat-label">Focus</div>
+                                    <div class="ie-stat-value">Realtime UX</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ie-link" onclick="setAddress('https://ml-algorithms-explorer-6cccfacb7705.herokuapp.com')">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
-                            <span>ML Algorithms Explorer</span>
+                        <div class="ie-section">
+                            <div class="ie-section-title">Featured Projects</div>
+                            <div class="ie-project-grid">
+                                <div class="ie-project-card" onclick="openExternal('https://chriszhang6.github.io/space_invader/')">
+                                    <div class="ie-card-heading">
+                                        <span class="ie-card-title">Space Invader Redux</span>
+                                        <span class="ie-card-pill">New</span>
+                                    </div>
+                                    <p>Browser-based tribute to the arcade classic with modern particle effects, power-ups, and responsive controls.</p>
+                                    <div class="ie-card-meta">
+                                        <span>Canvas</span>
+                                        <span>Game Dev</span>
+                                    </div>
+                                </div>
+                                <div class="ie-project-card" onclick="openExternal('https://ml-algorithms-explorer-6cccfacb7705.herokuapp.com')">
+                                    <div class="ie-card-heading">
+                                        <span class="ie-card-title">ML Algorithms Explorer</span>
+                                        <span class="ie-card-pill">Interactive</span>
+                                    </div>
+                                    <p>Hands-on playground for comparing classical ML models with live plots, sliders, and sharable presets.</p>
+                                    <div class="ie-card-meta">
+                                        <span>Flask</span>
+                                        <span>Data Viz</span>
+                                    </div>
+                                </div>
+                                <div class="ie-project-card" onclick="openExternal('https://au-property-search-llama-a4cd5b298669.herokuapp.com')">
+                                    <div class="ie-card-heading">
+                                        <span class="ie-card-title">AU Property Search</span>
+                                        <span class="ie-card-pill">Insight</span>
+                                    </div>
+                                    <p>Property intelligence dashboard powered by LLM-assisted queries, smart filters, and location-aware charts.</p>
+                                    <div class="ie-card-meta">
+                                        <span>LLM</span>
+                                        <span>Mapping</span>
+                                    </div>
+                                </div>
+                                <div class="ie-project-card" onclick="openExternal('https://greyhound-ab436e93558c.herokuapp.com/home')">
+                                    <div class="ie-card-heading">
+                                        <span class="ie-card-title">Greyhound Sanctuary</span>
+                                        <span class="ie-card-pill">Story</span>
+                                    </div>
+                                    <p>Immersive adoption portal that spotlights each dog with cinematic cards, audio, and custom donation flows.</p>
+                                    <div class="ie-card-meta">
+                                        <span>Next.js</span>
+                                        <span>Storytelling</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ie-link" onclick="setAddress('https://au-property-search-llama-a4cd5b298669.herokuapp.com')">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
-                            <span>AU Property Search</span>
-                        </div>
-                        <div class="ie-link" onclick="setAddress('https://greyhound-ab436e93558c.herokuapp.com/home')">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=" alt="Link">
-                            <span>Greyhound Sanctuary</span>
+                        <div class="ie-section">
+                            <div class="ie-section-title">Quick Links</div>
+                            <div class="ie-mini-links">
+                                <div class="ie-mini-link" onclick="openExternal('https://www.linkedin.com/in/chris-y-zhang/')">LinkedIn Profile</div>
+                                <div class="ie-mini-link" onclick="openExternal('https://github.com/Chriszhang6')">GitHub / Open Source</div>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
             <div class="resize-handle"></div>
         </div>
@@ -2490,6 +2744,11 @@ Click on the desktop icons to explore different features!</pre>
                     document.getElementById('ie-status').textContent = 'Done';
                 }, 1000);
             }
+        }
+
+        function openExternal(url) {
+            setAddress(url);
+            goToAddress();
         }
 
         function shutdown() {
