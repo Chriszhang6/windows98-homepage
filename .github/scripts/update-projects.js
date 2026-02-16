@@ -49,38 +49,66 @@ function httpsGet(url, headers = {}) {
 
 /**
  * Check if a repository has GitHub Pages enabled
+ * This uses the GitHub Pages API which requires authentication
  */
-async function hasGitHubPages(repoName, token) {
+async function hasGitHubPagesAPI(repoName, token) {
   try {
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
     const pagesInfo = await httpsGet(
       `https://api.github.com/repos/${USERNAME}/${repoName}/pages`,
       headers
     );
-    return pagesInfo && pagesInfo.status === 'built';
+    // The API returns pages info if it exists
+    return !!pagesInfo;
   } catch (error) {
-    // If we get a 404, it means Pages is not configured
+    // 404 means no Pages configured
     return false;
   }
 }
 
 /**
- * Check if a repository is likely to have Pages by checking common indicators
+ * Try to fetch the potential GitHub Pages URL to see if it exists
+ * This is a fallback method that doesn't require API access
+ */
+async function testPagesURL(repoName) {
+  return new Promise((resolve) => {
+    const pagesUrl = `https://${USERNAME}.github.io/${repoName}/`;
+
+    const options = {
+      method: 'HEAD',
+      timeout: 5000, // 5 second timeout
+      headers: {
+        'User-Agent': 'GitHub-Actions-Update-Projects'
+      }
+    };
+
+    const req = https.get(pagesUrl, options, (res) => {
+      // Any success response (2xx, 3xx) means the page exists
+      resolve(res.statusCode >= 200 && res.statusCode < 400);
+    });
+
+    req.on('error', () => resolve(false));
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(false);
+    });
+  });
+}
+
+/**
+ * Check if a repository is likely to have GitHub Pages
+ * Based on common naming patterns
  */
 function likelyHasPages(repo) {
-  // Check if repo has a gh-pages branch indicator or common Pages files
-  const indicators = [
-    'index.html',
-    'README.md'
-  ];
-
-  // Check repository name patterns
+  // Check repository name patterns commonly used for GitHub Pages
   const pagesPatterns = [
-    /\.github\.io$/,
-    /-homepage$/,
-    /-portfolio$/,
-    /-website$/,
-    /-site$/
+    /\.github\.io$/,           // Main pages repo
+    /-homepage$/,              // Common suffix
+    /-portfolio$/,             // Portfolio sites
+    /-website$/,               // Website repos
+    /-site$/,                  // Site repos
+    /^space_invader/,          // Known project
+    /^2025$/,                  // Known project
   ];
 
   return pagesPatterns.some(pattern => pattern.test(repo.name));
@@ -126,37 +154,60 @@ async function main() {
     const repos = await httpsGet(REPOS_API, headers);
     console.log(`✅ Found ${repos.length} repositories`);
 
+    // Log all repo names for debugging
+    console.log(`📋 All repositories:`, repos.map(r => r.name).join(', '));
+
     // Filter and process repositories
     const projects = [];
 
     for (const repo of repos) {
       // Skip forks and archived repos
       if (repo.fork || repo.archived) {
+        console.log(`  ⊝ Skipping ${repo.name} (fork=${repo.fork}, archived=${repo.archived})`);
         continue;
       }
 
+      console.log(`  🔍 Checking ${repo.name}...`);
+
       // Check if repo has GitHub Pages
       let hasPages = false;
+      let detectionMethod = '';
 
-      // First, try to check via API (requires token)
+      // Method 1: Try GitHub Pages API (requires token)
       if (token) {
-        hasPages = await hasGitHubPages(repo.name, token);
+        try {
+          hasPages = await hasGitHubPagesAPI(repo.name, token);
+          detectionMethod = hasPages ? 'API' : 'API (not found)';
+        } catch (e) {
+          detectionMethod = `API error: ${e.message}`;
+        }
+        console.log(`    API check: ${detectionMethod}`);
       }
 
-      // Fallback: check if it's likely to have Pages based on name patterns
+      // Method 2: Test URL directly (more reliable for some repos)
+      if (!hasPages) {
+        try {
+          hasPages = await testPagesURL(repo.name);
+          detectionMethod = hasPages ? 'URL test' : 'URL test (not found)';
+        } catch (e) {
+          detectionMethod = `URL test error: ${e.message}`;
+        }
+        console.log(`    URL test: ${detectionMethod}`);
+      }
+
+      // Method 3: Check naming patterns (last resort)
       if (!hasPages && likelyHasPages(repo)) {
         hasPages = true;
-      }
-
-      // Also check if it's the main GitHub Pages repo
-      if (repo.name === `${USERNAME}.github.io`) {
-        hasPages = true;
+        detectionMethod = 'Pattern match';
+        console.log(`    Pattern match: ✓`);
       }
 
       if (hasPages) {
         const project = formatProjectData(repo);
         projects.push(project);
-        console.log(`  ✓ ${repo.name} - ${repo.description?.substring(0, 50) || 'No description'}`);
+        console.log(`  ✅ ${repo.name} - ADDED (${detectionMethod})`);
+      } else {
+        console.log(`  ⊘ ${repo.name} - Skipped (no Pages)`);
       }
     }
 
@@ -180,7 +231,10 @@ async function main() {
       console.log('\n📊 Project Summary:');
       projects.forEach(p => {
         console.log(`  - ${p.name} (${p.language}, ⭐ ${p.stars})`);
+        console.log(`    ${p.url}`);
       });
+    } else {
+      console.log('\n⚠️  No projects found with GitHub Pages enabled.');
     }
 
   } catch (error) {
@@ -190,4 +244,4 @@ async function main() {
 }
 
 // Run the script
-main();
+main().catch(console.error);
