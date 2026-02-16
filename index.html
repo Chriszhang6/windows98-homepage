@@ -2015,50 +2015,9 @@ Click on the desktop icons to explore different features!</pre>
                         </div>
                         <div class="ie-section">
                             <div class="ie-section-title">Featured Projects</div>
-                            <div class="ie-project-grid">
-                                <div class="ie-project-card" onclick="openExternal('https://chriszhang6.github.io/space_invader/')">
-                                    <div class="ie-card-heading">
-                                        <span class="ie-card-title">Space Invader Redux</span>
-                                        <span class="ie-card-pill">New</span>
-                                    </div>
-                                    <p>Browser-based tribute to the arcade classic with modern particle effects, power-ups, and responsive controls.</p>
-                                    <div class="ie-card-meta">
-                                        <span>Canvas</span>
-                                        <span>Game Dev</span>
-                                    </div>
-                                </div>
-                                <div class="ie-project-card" onclick="openExternal('https://ml-algorithms-explorer-6cccfacb7705.herokuapp.com')">
-                                    <div class="ie-card-heading">
-                                        <span class="ie-card-title">ML Algorithms Explorer</span>
-                                        <span class="ie-card-pill">Interactive</span>
-                                    </div>
-                                    <p>Hands-on playground for comparing classical ML models with live plots, sliders, and sharable presets.</p>
-                                    <div class="ie-card-meta">
-                                        <span>Flask</span>
-                                        <span>Data Viz</span>
-                                    </div>
-                                </div>
-                                <div class="ie-project-card" onclick="openExternal('https://au-property-search-llama-a4cd5b298669.herokuapp.com')">
-                                    <div class="ie-card-heading">
-                                        <span class="ie-card-title">AU Property Search</span>
-                                        <span class="ie-card-pill">Insight</span>
-                                    </div>
-                                    <p>Property intelligence dashboard powered by LLM-assisted queries, smart filters, and location-aware charts.</p>
-                                    <div class="ie-card-meta">
-                                        <span>LLM</span>
-                                        <span>Mapping</span>
-                                    </div>
-                                </div>
-                                <div class="ie-project-card" onclick="openExternal('https://greyhound-ab436e93558c.herokuapp.com/home')">
-                                    <div class="ie-card-heading">
-                                        <span class="ie-card-title">Greyhound Sanctuary</span>
-                                        <span class="ie-card-pill">Story</span>
-                                    </div>
-                                    <p>Immersive adoption portal that spotlights each dog with cinematic cards, audio, and custom donation flows.</p>
-                                    <div class="ie-card-meta">
-                                        <span>Next.js</span>
-                                        <span>Storytelling</span>
-                                    </div>
+                            <div class="ie-project-grid" id="ie-project-grid">
+                                <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #808080;">
+                                    Loading projects from GitHub...
                                 </div>
                             </div>
                         </div>
@@ -2728,6 +2687,8 @@ Click on the desktop icons to explore different features!</pre>
 
         function openInternetExplorer() {
             openWindow('ie-window');
+            // Load GitHub projects when IE window opens
+            loadGitHubProjects();
         }
 
         function setAddress(url) {
@@ -2749,6 +2710,110 @@ Click on the desktop icons to explore different features!</pre>
         function openExternal(url) {
             setAddress(url);
             goToAddress();
+        }
+
+        /**
+         * Load GitHub projects from projects.json and display them in the IE window
+         * This function is called when Internet Explorer window is opened
+         */
+        async function loadGitHubProjects() {
+            const projectGrid = document.getElementById('ie-project-grid');
+            if (!projectGrid) {
+                console.error('Project grid not found');
+                return;
+            }
+
+            try {
+                // Show loading state
+                projectGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #000080;">Loading projects...</div>';
+
+                // Fetch projects.json
+                const response = await fetch('./projects.json');
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load projects: ${response.status}`);
+                }
+
+                const projects = await response.json();
+
+                // Clear loading state
+                projectGrid.innerHTML = '';
+
+                // Check if there are any projects
+                if (!projects || projects.length === 0) {
+                    projectGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #808080;">No GitHub Pages projects found. Check back soon!</div>';
+                    return;
+                }
+
+                // Create project cards for each repository
+                projects.forEach(project => {
+                    const card = createProjectCard(project);
+                    projectGrid.appendChild(card);
+                });
+
+                console.log(`✅ Loaded ${projects.length} GitHub projects`);
+
+            } catch (error) {
+                console.error('Failed to load GitHub projects:', error);
+
+                // Show fallback message if loading fails
+                projectGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #808080;">
+                        <p>Unable to load projects at this time.</p>
+                        <p style="font-size: 10px; margin-top: 10px;">Error: ${error.message}</p>
+                        <p style="font-size: 10px; margin-top: 10px;">Visit <a href="https://github.com/Chriszhang6" target="_blank" style="color: #000080;">GitHub</a> to see all projects.</p>
+                    </div>
+                `;
+            }
+        }
+
+        /**
+         * Create a project card element from project data
+         */
+        function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'ie-project-card';
+            card.onclick = () => openExternal(project.url);
+
+            // Format date
+            const updatedDate = new Date(project.updatedAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            // Build tags from language and topics
+            let tags = [];
+            if (project.language) {
+                tags.push(project.language);
+            }
+            if (project.topics && project.topics.length > 0) {
+                tags = tags.concat(project.topics.slice(0, 2)); // Add first 2 topics
+            }
+
+            card.innerHTML = `
+                <div class="ie-card-heading">
+                    <span class="ie-card-title">${escapeHtml(project.name)}</span>
+                    ${project.stars > 0 ? `<span class="ie-card-pill">⭐ ${project.stars}</span>` : ''}
+                </div>
+                <p>${escapeHtml(project.description)}</p>
+                <div class="ie-card-meta">
+                    ${tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}
+                    <span style="color: #808080;">${updatedDate}</span>
+                </div>
+            `;
+
+            return card;
+        }
+
+        /**
+         * Escape HTML to prevent XSS
+         */
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function shutdown() {
