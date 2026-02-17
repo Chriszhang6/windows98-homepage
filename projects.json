@@ -1,5 +1,17 @@
 [
   {
+    "name": "greyhound",
+    "description": "A GitHub project",
+    "url": "https://Chriszhang6.github.io/greyhound/",
+    "github": "https://github.com/Chriszhang6/greyhound",
+    "language": "TypeScript",
+    "stars": 0,
+    "forks": 0,
+    "updatedAt": "2026-02-16T10:07:46Z",
+    "createdAt": "2025-03-22T08:36:13Z",
+    "topics": []
+  },
+  {
     "name": "windows98-homepage",
     "description": "Windows 98 Personal Homepage",
     "url": "https://Chriszhang6.github.io/windows98-homepage/",
@@ -7,7 +19,7 @@
     "language": "HTML",
     "stars": 0,
     "forks": 0,
-    "updatedAt": "2026-02-16T07:29:27Z",
+    "updatedAt": "2026-02-16T07:35:10Z",
     "createdAt": "2025-10-21T21:23:35Z",
     "topics": []
   },
