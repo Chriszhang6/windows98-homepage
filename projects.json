@@ -7,8 +7,20 @@
     "language": "Python",
     "stars": 1,
     "forks": 0,
-    "updatedAt": "2026-02-19T22:39:27Z",
+    "updatedAt": "2026-02-20T22:34:28Z",
     "createdAt": "2026-02-14T06:12:11Z",
+    "topics": []
+  },
+  {
+    "name": "mario",
+    "description": "A GitHub project",
+    "url": "https://Chriszhang6.github.io/mario/",
+    "github": "https://github.com/Chriszhang6/mario",
+    "language": "JavaScript",
+    "stars": 0,
+    "forks": 0,
+    "updatedAt": "2026-02-20T07:07:34Z",
+    "createdAt": "2026-02-20T07:02:42Z",
     "topics": []
   },
   {
@@ -19,7 +31,7 @@
     "language": "HTML",
     "stars": 0,
     "forks": 0,
-    "updatedAt": "2026-02-19T01:15:48Z",
+    "updatedAt": "2026-02-20T01:11:13Z",
     "createdAt": "2025-10-21T21:23:35Z",
     "topics": []
   },
