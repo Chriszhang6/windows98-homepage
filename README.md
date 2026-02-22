@@ -74,82 +74,52 @@ The website is fully responsive and optimized for mobile devices:
 ## 💡 Solution Summary: Automated GitHub Pages Project Showcase
 
 ### Overview
-This project features an **automated GitHub repository showcase** that dynamically displays all GitHub repositories with GitHub Pages enabled in the Internet Explorer window. The system runs daily via GitHub Actions, eliminating the need for manual updates.
+This project features a **GitHub repository showcase** that dynamically displays all GitHub repositories with GitHub Pages enabled in the Internet Explorer window.
 
 ### Architecture
 
 ```
-┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-│  GitHub Actions │ ───▶ │  update-projects│ ───▶ │  projects.json  │
-│  (Daily Cron)   │      │     .js script  │      │   (Data File)   │
-└─────────────────┘      └─────────────────┘      └────────┬────────┘
-                                                              │
-                                                              ▼
-                                                    ┌─────────────────┐
-                                                    │  index.html     │
-                                                    │  (Fetches &     │
-                                                    │   Displays)     │
-                                                    └─────────────────┘
+┌─────────────────────────────────────────────────┐
+│  project-daily-snapshot (Centralized Data)      │
+│  - Runs daily via GitHub Actions                │
+│  - Generates projects.json                      │
+│  - Hosted on CDN for fast access                │
+└─────────────────────────────────────────────────┘
+                      │
+                      │ jsDelivr CDN
+                      ▼
+┌─────────────────────────────────────────────────┐
+│  windows98-homepage                              │
+│  - Fetches projects.json from CDN               │
+│  - Displays in Internet Explorer window         │
+└─────────────────────────────────────────────────┘
 ```
 
 ### Implementation Details
 
-#### 1. GitHub Actions Workflow (`.github/workflows/update-projects.yml`)
-- **Trigger**: Runs daily at UTC 00:00 + manual dispatch option
-- **Authentication**: Uses Personal Access Token (PAT) to bypass branch protection
-- **Process**: Fetches repos → Filters for GitHub Pages → Updates `projects.json`
+#### Data Source
+This project uses a centralized `projects.json` file from the [project-daily-snapshot](https://github.com/Chriszhang6/project-daily-snapshot) repository, which:
+- **Updates daily** via GitHub Actions
+- **Detects GitHub Pages** using multiple methods (API, URL testing, pattern matching)
+- **Served via CDN** for fast loading (jsDelivr)
 
-#### 2. Update Script (`.github/scripts/update-projects.js`)
-The script uses **three detection methods** to find GitHub Pages repositories:
-
-1. **GitHub Pages API**: Official API check (requires authentication)
-2. **URL Testing**: Direct HTTP HEAD request to potential Pages URLs
-3. **Pattern Matching**: Matches known repository names
-
-```javascript
-// Example detection logic
-for (const repo of repos) {
-    let hasPages = await hasGitHubPagesAPI(repo.name, token);
-    if (!hasPages) hasPages = await testPagesURL(repo.name);
-    if (!hasPages && likelyHasPages(repo)) hasPages = true;
-}
-```
-
-#### 3. Frontend Integration (`index.html`)
+#### Frontend Integration (`index.html`)
 The Internet Explorer window dynamically loads projects:
 
 ```javascript
 async function loadGitHubProjects() {
-    const response = await fetch('./projects.json');
+    const response = await fetch('https://cdn.jsdelivr.net/gh/Chriszhang6/project-daily-snapshot@main/projects.json');
     const projects = await response.json();
     // Generate project cards dynamically
 }
 ```
 
-### Data Flow
+### Key Features
 
-1. **Daily Trigger**: GitHub Actions workflow initiates at 00:00 UTC
-2. **Repository Scan**: Script fetches all user repositories via GitHub API
-3. **Pages Detection**: Each repo is checked for GitHub Pages availability
-4. **Data Generation**: Matching repos are formatted into `projects.json`
-5. **Auto-Commit**: Changes are automatically committed to main branch
-6. **Frontend Display**: Website fetches and displays updated project list
-
-### Setup Requirements
-
-To replicate this automation in your own fork:
-
-1. **Create Personal Access Token**:
-   - Visit `https://github.com/settings/tokens/new`
-   - Grant `repo` permissions
-   - Store as `PAT_TOKEN` in repository secrets
-
-2. **Update Configuration**:
-   - Edit `USERNAME` in `.github/scripts/update-projects.js`
-   - Ensure workflow permissions are set to "Read and write"
-
-3. **Manual Trigger** (optional):
-   - Visit Actions tab → "Update GitHub Projects" → "Run workflow"
+- ✅ **Zero Maintenance**: Automatically updates with new GitHub Pages projects
+- ✅ **Smart Detection**: Multiple methods ensure comprehensive repository discovery
+- ✅ **CDN Powered**: Fast loading via jsDelivr CDN
+- ✅ **Responsive Design**: Projects displayed in Windows 98-style cards
 
 ### Key Features
 
