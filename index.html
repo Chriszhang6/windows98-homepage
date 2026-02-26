@@ -2223,6 +2223,10 @@ Click on the desktop icons to explore different features!</pre>
         let windowStates = {}; // Store original window positions and sizes for restore
         let recycleBinItems = []; // Store deleted files: [{name, originalPath, icon, type, deletedAt}]
 
+        // Virtual File System for text files
+        let virtualFileSystem = JSON.parse(localStorage.getItem('virtualFileSystem')) || {};
+        let currentNotepadFile = null; // Track currently open file
+
         // System Sound Functions with Themes
         const soundThemes = {
             'classic': {
@@ -2429,6 +2433,76 @@ Click on the desktop icons to explore different features!</pre>
                 [{ text: 'OK' }],
                 callback
             );
+        }
+
+        function promptDialog(title, message, defaultValue, callback) {
+            playSystemSound('click');
+
+            const overlay = document.createElement('div');
+            overlay.className = 'system-dialog-overlay';
+
+            const dialog = document.createElement('div');
+            dialog.className = 'system-dialog';
+
+            dialog.innerHTML = `
+                <div class="dialog-titlebar">
+                    <span>${title}</span>
+                    <button class="dialog-close" onclick="this.closest('.system-dialog-overlay').remove()">×</button>
+                </div>
+                <div class="dialog-content" style="flex-direction: column; align-items: stretch;">
+                    <span class="dialog-message" style="margin-bottom: 10px;">${message}</span>
+                    <input type="text" class="dialog-input" id="prompt-input" value="${defaultValue || ''}" style="
+                        width: 100%;
+                        padding: 8px;
+                        border: 2px inset #c0c0c0;
+                        background: white;
+                        font-family: 'MS Sans Serif', sans-serif;
+                        font-size: 14px;
+                    ">
+                </div>
+                <div class="dialog-buttons">
+                    <button class="dialog-btn" id="prompt-ok">OK</button>
+                    <button class="dialog-btn" id="prompt-cancel">Cancel</button>
+                </div>
+            `;
+
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+
+            const input = dialog.querySelector('#prompt-input');
+            input.focus();
+            input.select();
+
+            // Handle Enter key
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const value = input.value;
+                    overlay.remove();
+                    if (callback) callback(value);
+                } else if (e.key === 'Escape') {
+                    overlay.remove();
+                    if (callback) callback(null);
+                }
+            });
+
+            dialog.querySelector('#prompt-ok').addEventListener('click', () => {
+                const value = input.value;
+                overlay.remove();
+                if (callback) callback(value);
+            });
+
+            dialog.querySelector('#prompt-cancel').addEventListener('click', () => {
+                overlay.remove();
+                if (callback) callback(null);
+            });
+
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                    if (callback) callback(null);
+                }
+            });
         }
 
         function toggleStartMenu() {
@@ -3919,11 +3993,12 @@ Click on the desktop icons to explore different features!</pre>
         function notepadAction(action) {
             // 声音由全局监听器统一处理
             const textarea = document.getElementById('notepad-textarea');
-            
+
             if (action === 'new') {
                 confirmDialog('Create a new document? All unsaved changes will be lost.', (confirmed) => {
                     if (confirmed) {
                         textarea.value = '';
+                        currentNotepadFile = null;
                         document.querySelector('#notepad-window .window-title').textContent = 'Untitled - Notepad';
                     }
                 });
@@ -3933,102 +4008,176 @@ Click on the desktop icons to explore different features!</pre>
                     errorDialog('Cannot save empty document.');
                     return;
                 }
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'document.txt';
-                a.click();
-                URL.revokeObjectURL(url);
-                alertDialog('Document saved successfully!');
+
+                // If we have a current file, save directly. Otherwise, ask for filename.
+                const filename = currentNotepadFile;
+
+                if (filename) {
+                    // Save to existing file
+                    virtualFileSystem[filename] = {
+                        content: content,
+                        type: 'text/plain',
+                        createdAt: virtualFileSystem[filename]?.createdAt || Date.now(),
+                        modifiedAt: Date.now()
+                    };
+                    localStorage.setItem('virtualFileSystem', JSON.stringify(virtualFileSystem));
+                    alertDialog('Document saved successfully!');
+                } else {
+                    // Ask for filename
+                    promptDialog('Save As', 'Enter filename:', 'document.txt', (name) => {
+                        if (name && name.trim()) {
+                            // Ensure .txt extension
+                            let finalName = name.trim();
+                            if (!finalName.toLowerCase().endsWith('.txt')) {
+                                finalName += '.txt';
+                            }
+
+                            virtualFileSystem[finalName] = {
+                                content: content,
+                                type: 'text/plain',
+                                createdAt: Date.now(),
+                                modifiedAt: Date.now()
+                            };
+                            localStorage.setItem('virtualFileSystem', JSON.stringify(virtualFileSystem));
+                            currentNotepadFile = finalName;
+                            document.querySelector('#notepad-window .window-title').textContent = finalName + ' - Notepad';
+                            alertDialog('Document saved successfully!');
+                        }
+                    });
+                }
             } else if (action === 'open') {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'text/plain';
-                input.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            textarea.value = e.target.result;
-                            document.querySelector('#notepad-window .window-title').textContent = file.name + ' - Notepad';
-                        };
-                        reader.readAsText(file);
+                // Show list of files in virtual file system
+                const files = Object.keys(virtualFileSystem);
+
+                if (files.length === 0) {
+                    alertDialog('No saved files found. Create and save a file first!');
+                    return;
+                }
+
+                // Create a file selection dialog
+                showSystemDialog('info', 'Open File', 'Select a file to open:', files.map((file, index) => ({
+                    text: file
+                })), (text, index) => {
+                    if (index >= 0 && index < files.length) {
+                        const filename = files[index];
+                        const fileData = virtualFileSystem[filename];
+                        if (fileData) {
+                            textarea.value = fileData.content;
+                            currentNotepadFile = filename;
+                            document.querySelector('#notepad-window .window-title').textContent = filename + ' - Notepad';
+                        }
                     }
-                };
-                input.click();
+                });
+            }
+        }
+
+        // Helper function to open a text file from virtual file system
+        function openVirtualTextFile(filename) {
+            const fileData = virtualFileSystem[filename];
+            if (fileData) {
+                openWindow('notepad-window');
+                const textarea = document.getElementById('notepad-textarea');
+                textarea.value = fileData.content;
+                currentNotepadFile = filename;
+                document.querySelector('#notepad-window .window-title').textContent = filename + ' - Notepad';
             }
         }
 
         // File Manager Functions
         function loadFileManagerContent(managerId, path) {
-            const container = managerId === 'c-drive' ? 
-                document.getElementById('c-drive-content') : 
+            const container = managerId === 'c-drive' ?
+                document.getElementById('c-drive-content') :
                 document.getElementById('file-manager-content');
             const pathInput = managerId === 'c-drive' ?
                 document.getElementById('c-drive-path') :
                 document.getElementById('file-manager-path');
-            
+
             if (!container) return;
-            
+
             container.innerHTML = '';
             pathInput.value = path;
-            
+
+            // Get items from the file system
             const pathData = getPathData(path);
-            if (pathData && pathData.items) {
-                const items = Object.keys(pathData.items);
-                
-                if (items.length === 0) {
-                    // Show empty folder message
-                    const emptyMsg = document.createElement('div');
-                    emptyMsg.style.cssText = `
-                        text-align: center;
-                        padding: 50px 20px;
-                        color: #808080;
-                        font-size: 12px;
-                        grid-column: 1 / -1;
-                    `;
-                    emptyMsg.textContent = 'This folder is empty.';
-                    container.appendChild(emptyMsg);
-                } else {
-                    items.forEach(name => {
-                        const item = pathData.items[name];
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'file-item draggable';
-                        fileItem.draggable = true;
-                        fileItem.onclick = () => {
-                            if (item.type === 'folder') {
-                                navigateToPath(managerId, path + name + '\\');
-                            } else if (item.type === 'video') {
-                                // Open video in Media Player
-                                openMediaPlayer(item.file, name);
-                            } else if (item.type === 'image') {
-                                // Open image in Image Viewer
-                                openImageViewer(item.file, name);
-                            } else {
-                                alertDialog(`File: ${name}\n\nThis is a simulated file system.`);
-                            }
-                        };
-                        
-                        const icon = document.createElement('img');
+            const items = pathData && pathData.items ? Object.keys(pathData.items) : [];
+
+            // Add virtual file system text files if in C:\ root
+            if (path === 'C:\\') {
+                const virtualFiles = Object.keys(virtualFileSystem);
+                virtualFiles.forEach(filename => {
+                    if (!items.includes(filename)) {
+                        items.push(filename);
+                    }
+                });
+            }
+
+            if (items.length === 0) {
+                // Show empty folder message
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.cssText = `
+                    text-align: center;
+                    padding: 50px 20px;
+                    color: #808080;
+                    font-size: 12px;
+                    grid-column: 1 / -1;
+                `;
+                emptyMsg.textContent = 'This folder is empty.';
+                container.appendChild(emptyMsg);
+            } else {
+                items.forEach(name => {
+                    let item = null;
+                    let isVirtualFile = false;
+
+                    // Check if this is a virtual file system file
+                    if (path === 'C:\\' && virtualFileSystem[name]) {
+                        isVirtualFile = true;
+                        item = { type: 'virtual-text' };
+                    } else if (pathData && pathData.items && pathData.items[name]) {
+                        item = pathData.items[name];
+                    }
+
+                    if (!item) return;
+
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item draggable';
+                    fileItem.draggable = true;
+                    fileItem.onclick = () => {
                         if (item.type === 'folder') {
-                            icon.src = 'images/c_drive.png';
+                            navigateToPath(managerId, path + name + '\\');
                         } else if (item.type === 'video') {
-                            icon.src = 'images/cd_player.png'; // Use CD player icon for videos
+                            // Open video in Media Player
+                            openMediaPlayer(item.file, name);
                         } else if (item.type === 'image') {
-                            icon.src = 'images/paint_tool.png'; // Use paint icon for images
+                            // Open image in Image Viewer
+                            openImageViewer(item.file, name);
+                        } else if (item.type === 'virtual-text' || isVirtualFile) {
+                            // Open virtual text file in Notepad
+                            openVirtualTextFile(name);
                         } else {
-                            icon.src = 'images/' + (item.icon || 'text.png');
+                            alertDialog(`File: ${name}\n\nThis is a simulated file system.`);
                         }
-                        fileItem.appendChild(icon);
-                        
-                        const label = document.createElement('span');
-                        label.textContent = name;
-                        fileItem.appendChild(label);
-                        
-                        container.appendChild(fileItem);
-                    });
-                }
+                    };
+
+                    const icon = document.createElement('img');
+                    if (item.type === 'folder') {
+                        icon.src = 'images/c_drive.png';
+                    } else if (item.type === 'video') {
+                        icon.src = 'images/cd_player.png'; // Use CD player icon for videos
+                    } else if (item.type === 'image') {
+                        icon.src = 'images/paint_tool.png'; // Use paint icon for images
+                    } else if (item.type === 'virtual-text' || isVirtualFile) {
+                        icon.src = 'images/text.png'; // Text icon for virtual files
+                    } else {
+                        icon.src = 'images/' + (item.icon || 'text.png');
+                    }
+                    fileItem.appendChild(icon);
+
+                    const label = document.createElement('span');
+                    label.textContent = name;
+                    fileItem.appendChild(label);
+
+                    container.appendChild(fileItem);
+                });
             }
         }
 
