@@ -2782,8 +2782,9 @@ Click on the desktop icons to explore different features!</pre>
                 // Show loading state
                 projectGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #000080;">Loading projects...</div>';
 
-                // Fetch projects.json from centralized source
-                const response = await fetch('https://cdn.jsdelivr.net/gh/Chriszhang6/project-daily-snapshot@main/projects.json');
+                // Fetch projects.json from centralized source (5-min cache key ensures reasonably fresh content)
+                const cacheKey = Math.floor(Date.now() / 300000);
+                const response = await fetch(`https://raw.githubusercontent.com/Chriszhang6/project-daily-snapshot/main/projects.json?t=${cacheKey}`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to load projects: ${response.status}`);
