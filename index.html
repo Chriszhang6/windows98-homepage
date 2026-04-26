@@ -48,14 +48,13 @@
             align-items: center;
             width: 120px;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 2px;
-            transition: background-color 0.1s, border 0.1s;
+            padding: 6px 8px;
             border: 1px solid transparent;
+            background: transparent;
         }
 
         .desktop-icon:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+            background: transparent;
         }
 
         .desktop-icon:focus {
@@ -63,23 +62,39 @@
         }
 
         .desktop-icon.selected {
-            background: rgba(0, 0, 128, 0.35);
-            border: 1px dotted #ffffff;
+            border-color: transparent;
         }
 
         .desktop-icon img {
             width: 48px;
             height: 48px;
             margin-bottom: 8px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
 
         .desktop-icon span {
+            display: inline-block;
             color: white;
             text-align: center;
             font-size: 12px;
-            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+            line-height: 1.15;
+            padding: 2px 5px;
+            text-shadow: none;
             word-wrap: break-word;
             max-width: 120px;
+        }
+
+        .desktop-icon:hover span,
+        .desktop-icon:focus span {
+            border: 1px dotted rgba(255, 255, 255, 0.6);
+            padding: 1px 4px;
+        }
+
+        .desktop-icon.selected span {
+            background: #000080;
+            border: 1px dotted #ffffff;
+            padding: 1px 4px;
         }
 
         .taskbar {
@@ -110,12 +125,13 @@
         }
 
         .start-button:hover {
-            background: linear-gradient(to bottom, #d0d0d0, #b0b0b0);
+            background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
         }
 
         .start-button:active {
             background: linear-gradient(to bottom, #a0a0a0, #c0c0c0);
             border: 1px inset #c0c0c0;
+            padding: 1px 7px 0 9px;
         }
 
         .start-icon {
@@ -129,6 +145,37 @@
             display: flex;
             align-items: center;
             padding: 0 5px;
+            gap: 2px;
+        }
+
+        .taskbar-item {
+            min-width: 120px;
+            max-width: 180px;
+            height: 22px;
+            padding: 2px 8px;
+            background: #c0c0c0;
+            border-top: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-right: 1px solid #404040;
+            border-bottom: 1px solid #404040;
+            box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+            cursor: pointer;
+            font-size: 11px;
+            line-height: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            user-select: none;
+        }
+
+        .taskbar-item.active,
+        .taskbar-item:active {
+            border-top: 1px solid #404040;
+            border-left: 1px solid #404040;
+            border-right: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
+            box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #dfdfdf;
+            padding: 3px 7px 1px 9px;
         }
 
         .system-tray {
@@ -216,6 +263,7 @@
             min-width: 300px;
             min-height: 200px;
             z-index: 100;
+            box-shadow: 1px 1px 0 #000;
         }
 
         .window-titlebar {
@@ -254,14 +302,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0;
+            font-family: 'MS Sans Serif', sans-serif;
         }
 
         .window-controls button:hover {
-            background: #d0d0d0;
+            background: #c0c0c0;
         }
 
         .window-controls button:active {
             border: 1px inset #c0c0c0;
+            padding: 1px 0 0 1px;
         }
 
         .resize-handle {
@@ -1202,37 +1253,15 @@
 
         /* Window Animations */
         .window {
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: none;
         }
 
         .window.opening {
-            animation: windowOpen 0.2s ease-out;
+            animation: none;
         }
 
         .window.closing {
-            animation: windowClose 0.2s ease-in;
-        }
-
-        @keyframes windowOpen {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes windowClose {
-            from {
-                opacity: 1;
-                transform: scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: scale(0.9);
-            }
+            animation: none;
         }
 
         /* System Dialog Styles */
@@ -2685,12 +2714,10 @@ Click on the desktop icons to explore different features!</pre>
                 window.classList.remove('opening');
                 window.classList.add('closing');
                 playSystemSound('close');
-                
-                setTimeout(() => {
-                    window.style.display = 'none';
-                    window.classList.remove('closing');
-                    window.classList.remove('active');
-                }, 200);
+
+                window.style.display = 'none';
+                window.classList.remove('closing');
+                window.classList.remove('active');
                 
                 // 从打开的窗口列表中移除
                 const index = openWindows.indexOf(window);
@@ -2716,6 +2743,8 @@ Click on the desktop icons to explore different features!</pre>
                 if (taskbarItem) {
                     taskbarItem.remove();
                 }
+
+                activateTopVisibleWindow();
             }
         }
 
@@ -3620,6 +3649,8 @@ Click on the desktop icons to explore different features!</pre>
                 window.style.display = 'none';
                 window.classList.remove('active');
                 addToTaskbar(windowId, window.querySelector('.window-title').textContent);
+                activateTopVisibleWindow();
+                syncTaskbarState();
 
                 // 特殊处理：最小化CD Player时暂停音乐（用户可以通过任务栏重新打开）
                 if (windowId === 'cd-player-window' && currentAudio && !currentAudio.paused) {
@@ -3681,6 +3712,7 @@ Click on the desktop icons to explore different features!</pre>
                 // Check if already in taskbar
                 const existingItem = taskbarItems.querySelector(`[data-window-id="${windowId}"]`);
                 if (existingItem) {
+                    syncTaskbarState();
                     return;
                 }
                 
@@ -3688,16 +3720,7 @@ Click on the desktop icons to explore different features!</pre>
                 taskbarItem.className = 'taskbar-item';
                 taskbarItem.setAttribute('data-window-id', windowId);
                 taskbarItem.textContent = title;
-                taskbarItem.style.cssText = `
-                    background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
-                    border: 1px outset #c0c0c0;
-                    padding: 2px 8px;
-                    margin: 1px;
-                    cursor: pointer;
-                    font-size: 11px;
-                    min-width: 60px;
-                    text-align: center;
-                `;
+                taskbarItem.title = title;
                 
                 taskbarItem.addEventListener('click', function() {
                     const window = document.getElementById(windowId);
@@ -3706,13 +3729,35 @@ Click on the desktop icons to explore different features!</pre>
                             window.style.display = 'block';
                             bringToFront(window);
                         } else {
-                            window.style.display = 'none';
+                            minimizeWindow(windowId);
                         }
                     }
                 });
                 
                 taskbarItems.appendChild(taskbarItem);
+                syncTaskbarState();
             }
+        }
+
+        function syncTaskbarState() {
+            document.querySelectorAll('.taskbar-item').forEach(item => {
+                const windowId = item.getAttribute('data-window-id');
+                const window = document.getElementById(windowId);
+                const isActive = window && window.style.display !== 'none' && window.classList.contains('active');
+                item.classList.toggle('active', Boolean(isActive));
+            });
+        }
+
+        function activateTopVisibleWindow() {
+            for (let index = openWindows.length - 1; index >= 0; index -= 1) {
+                const candidate = openWindows[index];
+                if (candidate && candidate.style.display !== 'none') {
+                    bringToFront(candidate);
+                    return;
+                }
+            }
+
+            syncTaskbarState();
         }
 
         function bringToFront(win) {
@@ -3732,6 +3777,8 @@ Click on the desktop icons to explore different features!</pre>
                 openWindows.splice(index, 1);
                 openWindows.push(win);
             }
+
+            syncTaskbarState();
         }
 
         function clearDesktopIconSelection() {
