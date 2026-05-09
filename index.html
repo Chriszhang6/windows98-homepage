@@ -1637,47 +1637,81 @@
             font-size: 11px;
         }
 
-        /* Calculator Styles */
+        /* Calculator Styles (Windows 98 Standard mode inspired) */
         .calculator {
-            padding: 10px;
+            padding: 4px;
+            background: #c0c0c0;
+            height: calc(100% - 8px);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 11px;
+        }
+
+        .calculator-menu {
+            display: flex;
+            gap: 2px;
+            padding: 1px 2px;
+            border-bottom: 1px solid #808080;
+        }
+
+        .calculator-menu-item {
+            padding: 1px 6px;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+
+        .calculator-display-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 4px;
+            border-top: 1px solid #808080;
+            border-left: 1px solid #808080;
+            border-right: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
+            box-shadow: inset 1px 1px 0 #404040, inset -1px -1px 0 #dfdfdf;
+            background: #ffffff;
+            min-height: 30px;
+        }
+
+        .calculator-memory-indicator {
+            width: 14px;
+            text-align: center;
+            color: #000;
+            font-family: 'MS Sans Serif', sans-serif;
         }
 
         .calculator-display {
-            background: #000;
-            color: #0f0;
-            padding: 10px;
+            flex: 1;
             text-align: right;
             font-family: 'Courier New', monospace;
-            font-size: 24px;
-            margin-bottom: 10px;
-            border: 2px inset #000;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+            font-size: 20px;
+            color: #000;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .calculator-buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 3px;
+            padding: 0 2px 2px;
         }
 
         .calc-btn {
+            min-height: 28px;
             background: #c0c0c0;
             border-top: 1px solid #ffffff;
             border-left: 1px solid #ffffff;
             border-right: 1px solid #404040;
             border-bottom: 1px solid #404040;
             box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
-            padding: 15px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .calc-btn:hover {
-            background: #c0c0c0;
+            font-size: 11px;
+            font-family: 'MS Sans Serif', sans-serif;
+            padding: 0;
+            line-height: 1;
         }
 
         .calc-btn:active {
@@ -1686,16 +1720,21 @@
             border-right: 1px solid #ffffff;
             border-bottom: 1px solid #ffffff;
             box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #dfdfdf;
-            padding: 16px 14px 14px 16px;
+            padding: 1px 0 0 1px;
         }
 
-        .calc-btn.operator {
-            background: linear-gradient(to bottom, #ffa500, #ff8c00);
+        .calc-btn.function {
+            font-weight: bold;
+        }
+
+        .calc-btn.zero {
+            grid-column: span 2;
         }
 
         .calc-btn.equals {
-            background: linear-gradient(to bottom, #0000ff, #000080);
-            color: white;
+            grid-row: span 2;
+            min-height: 59px;
+            font-weight: bold;
         }
 
         /* Notepad Styles */
@@ -2378,34 +2417,53 @@ Click on the desktop icons to explore different features!</pre>
             <div class="window-title">Calculator</div>
             <div class="window-controls">
                 <button class="minimize-btn" onclick="minimizeWindow('calculator-window')">_</button>
-                <button class="maximize-btn" onclick="maximizeWindow('calculator-window')">□</button>
                 <button class="close-btn" onclick="closeWindow('calculator-window')">×</button>
             </div>
         </div>
-        <div class="window-content">
+        <div class="window-content" style="padding: 0; height: calc(100% - 24px);">
             <div class="calculator">
-                <div class="calculator-display" id="calc-display">0</div>
+                <div class="calculator-menu" aria-hidden="true">
+                    <div class="calculator-menu-item">Edit</div>
+                    <div class="calculator-menu-item">View</div>
+                    <div class="calculator-menu-item">Help</div>
+                </div>
+                <div class="calculator-display-wrap">
+                    <div class="calculator-memory-indicator" id="calc-memory-indicator"></div>
+                    <div class="calculator-display" id="calc-display">0.</div>
+                </div>
                 <div class="calculator-buttons">
-                    <button class="calc-btn" onclick="calcInput('C')">C</button>
-                    <button class="calc-btn" onclick="calcInput('CE')">CE</button>
-                    <button class="calc-btn" onclick="calcInput('%')">%</button>
-                    <button class="calc-btn operator" onclick="calcInput('/')">/</button>
+                    <button class="calc-btn" onclick="calcInput('backspace')">Back</button>
+                    <button class="calc-btn" onclick="calcInput('ce')">CE</button>
+                    <button class="calc-btn" onclick="calcInput('clear')">C</button>
+                    <button class="calc-btn function" onclick="calcInput('mc')">MC</button>
+                    <button class="calc-btn function" onclick="calcInput('mr')">MR</button>
+
+                    <button class="calc-btn function" onclick="calcInput('ms')">MS</button>
+                    <button class="calc-btn function" onclick="calcInput('mplus')">M+</button>
+                    <button class="calc-btn" onclick="calcInput('percent')">%</button>
+                    <button class="calc-btn" onclick="calcInput('sqrt')">sqrt</button>
+                    <button class="calc-btn" onclick="calcInput('divide')">/</button>
+
                     <button class="calc-btn" onclick="calcInput('7')">7</button>
                     <button class="calc-btn" onclick="calcInput('8')">8</button>
                     <button class="calc-btn" onclick="calcInput('9')">9</button>
-                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    <button class="calc-btn" onclick="calcInput('multiply')">*</button>
+                    <button class="calc-btn" onclick="calcInput('reciprocal')">1/x</button>
+
                     <button class="calc-btn" onclick="calcInput('4')">4</button>
                     <button class="calc-btn" onclick="calcInput('5')">5</button>
                     <button class="calc-btn" onclick="calcInput('6')">6</button>
-                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    <button class="calc-btn" onclick="calcInput('subtract')">-</button>
+                    <button class="calc-btn equals" onclick="calcInput('equals')">=</button>
+
                     <button class="calc-btn" onclick="calcInput('1')">1</button>
                     <button class="calc-btn" onclick="calcInput('2')">2</button>
                     <button class="calc-btn" onclick="calcInput('3')">3</button>
-                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
-                    <button class="calc-btn" onclick="calcInput('±')">±</button>
-                    <button class="calc-btn" onclick="calcInput('0')">0</button>
-                    <button class="calc-btn" onclick="calcInput('.')">.</button>
-                    <button class="calc-btn equals" onclick="calcInput('=')">=</button>
+                    <button class="calc-btn" onclick="calcInput('add')">+</button>
+
+                    <button class="calc-btn zero" onclick="calcInput('0')">0</button>
+                    <button class="calc-btn" onclick="calcInput('decimal')">.</button>
+                    <button class="calc-btn" onclick="calcInput('sign')">+/-</button>
                 </div>
             </div>
             <div class="resize-handle"></div>
@@ -2466,9 +2524,11 @@ Click on the desktop icons to explore different features!</pre>
         let systemVolume = 0.5;
         let selectedSoundTheme = 'modern'; // 'classic', 'modern', 'retro', 'minimal'
         let currentWallpaper = '1';
-        let calcValue = '0';
-        let calcOperator = null;
-        let calcPreviousValue = null;
+        let calcDisplayValue = '0';
+        let calcAccumulator = null;
+        let calcPendingOperator = null;
+        let calcMemoryValue = 0;
+        let calcResetInput = false;
         let fileSystemData = {
             'C:\\': {
                 type: 'folder',
@@ -2821,10 +2881,7 @@ Click on the desktop icons to explore different features!</pre>
                 } else if (windowId === 'file-manager-window') {
                     loadFileManagerContent('file-manager', 'C:\\');
                 } else if (windowId === 'calculator-window') {
-                    calcValue = '0';
-                    calcOperator = null;
-                    calcPreviousValue = null;
-                    document.getElementById('calc-display').textContent = '0';
+                    resetCalculatorState();
                 } else if (windowId === 'recycle-bin-window') {
                     loadRecycleBinContent();
                 } else if (windowId === 'media-player-window') {
@@ -2848,6 +2905,14 @@ Click on the desktop icons to explore different features!</pre>
                     } else {
                         windowWidth = 420; // Fixed width for Media Player
                         windowHeight = 550; // Fixed height for Media Player
+                    }
+                } else if (windowId === 'calculator-window') {
+                    if (isMobile) {
+                        windowWidth = Math.min(320, window.innerWidth - 20);
+                        windowHeight = 380;
+                    } else {
+                        windowWidth = 275;
+                        windowHeight = 365;
                     }
                 } else if (windowId === 'image-viewer-window') {
                     // Fixed size for Image Viewer
@@ -4234,56 +4299,216 @@ Click on the desktop icons to explore different features!</pre>
             }
         });
 
-        // Calculator Functions
-        function calcInput(value) {
-            // 声音由全局监听器统一处理
+        // Calculator Functions (Windows 98 style standard mode)
+        function resetCalculatorState() {
+            calcDisplayValue = '0';
+            calcAccumulator = null;
+            calcPendingOperator = null;
+            calcResetInput = false;
+            updateCalculatorDisplay();
+        }
+
+        function updateCalculatorDisplay() {
             const display = document.getElementById('calc-display');
-            
-            if (value >= '0' && value <= '9' || value === '.') {
-                if (calcValue === '0' || calcOperator === '=') {
-                    calcValue = value === '.' ? '0.' : value;
+            const memoryIndicator = document.getElementById('calc-memory-indicator');
+            if (!display || !memoryIndicator) {
+                return;
+            }
+
+            display.textContent = formatCalculatorNumber(calcDisplayValue);
+            memoryIndicator.textContent = calcMemoryValue !== 0 ? 'M' : '';
+        }
+
+        function formatCalculatorNumber(value) {
+            const text = String(value);
+            if (text === 'Error') {
+                return text;
+            }
+
+            const parsed = Number(text);
+            if (!Number.isFinite(parsed)) {
+                return 'Error';
+            }
+
+            const fixed = parsed.toPrecision(12);
+            const normalized = Number(fixed).toString();
+            return normalized.includes('.') ? normalized : `${normalized}.`;
+        }
+
+        function applyPendingOperation(nextOperator) {
+            const current = Number(calcDisplayValue);
+            if (!Number.isFinite(current)) {
+                calcDisplayValue = 'Error';
+                calcAccumulator = null;
+                calcPendingOperator = null;
+                calcResetInput = true;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (calcAccumulator === null) {
+                calcAccumulator = current;
+            } else if (calcPendingOperator) {
+                calcAccumulator = calculate(calcAccumulator, calcPendingOperator, current);
+                if (!Number.isFinite(calcAccumulator)) {
+                    calcDisplayValue = 'Error';
+                    calcAccumulator = null;
+                    calcPendingOperator = null;
+                    calcResetInput = true;
+                    updateCalculatorDisplay();
+                    return;
+                }
+            }
+
+            calcDisplayValue = String(calcAccumulator);
+            calcPendingOperator = nextOperator;
+            calcResetInput = true;
+            updateCalculatorDisplay();
+        }
+
+        function calcInput(value) {
+            if (/^[0-9]$/.test(value)) {
+                if (calcDisplayValue === 'Error' || calcResetInput) {
+                    calcDisplayValue = value;
+                    calcResetInput = false;
+                } else if (calcDisplayValue === '0') {
+                    calcDisplayValue = value;
                 } else {
-                    calcValue += value;
+                    calcDisplayValue += value;
                 }
-                display.textContent = calcValue;
-            } else if (value === 'C') {
-                calcValue = '0';
-                calcOperator = null;
-                calcPreviousValue = null;
-                display.textContent = '0';
-            } else if (value === 'CE') {
-                calcValue = '0';
-                display.textContent = '0';
-            } else if (value === '±') {
-                calcValue = (parseFloat(calcValue) * -1).toString();
-                display.textContent = calcValue;
-            } else if (value === '+' || value === '-' || value === '*' || value === '/') {
-                if (calcPreviousValue !== null && calcOperator) {
-                    calcValue = calculate(calcPreviousValue, calcOperator, parseFloat(calcValue)).toString();
-                    display.textContent = calcValue;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'decimal') {
+                if (calcDisplayValue === 'Error' || calcResetInput) {
+                    calcDisplayValue = '0.';
+                    calcResetInput = false;
+                } else if (!calcDisplayValue.includes('.')) {
+                    calcDisplayValue += '.';
                 }
-                calcPreviousValue = parseFloat(calcValue);
-                calcOperator = value;
-                calcValue = '0';
-            } else if (value === '=') {
-                if (calcPreviousValue !== null && calcOperator) {
-                    calcValue = calculate(calcPreviousValue, calcOperator, parseFloat(calcValue)).toString();
-                    display.textContent = calcValue;
-                    calcOperator = '=';
-                    calcPreviousValue = null;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'backspace') {
+                if (!calcResetInput && calcDisplayValue !== 'Error') {
+                    calcDisplayValue = calcDisplayValue.length > 1
+                        ? calcDisplayValue.slice(0, -1)
+                        : '0';
+                    if (calcDisplayValue === '-' || calcDisplayValue === '-0') {
+                        calcDisplayValue = '0';
+                    }
                 }
-            } else if (value === '%') {
-                calcValue = (parseFloat(calcValue) / 100).toString();
-                display.textContent = calcValue;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'ce') {
+                calcDisplayValue = '0';
+                calcResetInput = false;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'clear') {
+                resetCalculatorState();
+                return;
+            }
+
+            if (value === 'sign') {
+                if (calcDisplayValue !== '0' && calcDisplayValue !== 'Error') {
+                    calcDisplayValue = String(Number(calcDisplayValue) * -1);
+                }
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'sqrt') {
+                const current = Number(calcDisplayValue);
+                calcDisplayValue = current < 0 ? 'Error' : String(Math.sqrt(current));
+                calcResetInput = true;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'reciprocal') {
+                const current = Number(calcDisplayValue);
+                calcDisplayValue = current === 0 ? 'Error' : String(1 / current);
+                calcResetInput = true;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'percent') {
+                const current = Number(calcDisplayValue);
+                if (calcAccumulator !== null && calcPendingOperator) {
+                    calcDisplayValue = String((calcAccumulator * current) / 100);
+                } else {
+                    calcDisplayValue = String(current / 100);
+                }
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'mc') {
+                calcMemoryValue = 0;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'mr') {
+                calcDisplayValue = String(calcMemoryValue);
+                calcResetInput = true;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'ms') {
+                calcMemoryValue = Number(calcDisplayValue) || 0;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'mplus') {
+                calcMemoryValue += Number(calcDisplayValue) || 0;
+                updateCalculatorDisplay();
+                return;
+            }
+
+            if (value === 'add') {
+                applyPendingOperation('+');
+                return;
+            }
+
+            if (value === 'subtract') {
+                applyPendingOperation('-');
+                return;
+            }
+
+            if (value === 'multiply') {
+                applyPendingOperation('*');
+                return;
+            }
+
+            if (value === 'divide') {
+                applyPendingOperation('/');
+                return;
+            }
+
+            if (value === 'equals') {
+                if (calcPendingOperator) {
+                    applyPendingOperation(null);
+                }
             }
         }
 
         function calculate(a, op, b) {
-            switch(op) {
+            switch (op) {
                 case '+': return a + b;
                 case '-': return a - b;
                 case '*': return a * b;
-                case '/': return b !== 0 ? a / b : 0;
+                case '/': return b !== 0 ? a / b : Number.NaN;
                 default: return b;
             }
         }
