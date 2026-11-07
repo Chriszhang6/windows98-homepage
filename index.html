@@ -3867,96 +3867,198 @@ Click on the desktop icons to explore different features!</pre>
 
         // Window resizing functionality
         let isResizing = false;
-        let resizeStart = { x: 0, y: 0, width: 0, height: 0 };
+        let resizingWindow = null;
+        let resizeStart = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+            left: 0,
+            top: 0,
+            direction: ''
+        };
         let openWindows = []; // 跟踪所有打开的窗口
 
+        function getResizeDirection(clientX, clientY, win) {
+            if (!win) return '';
+            const rect = win.getBoundingClientRect();
+            const isMobile = window.innerWidth <= 768;
+            const edgeThreshold = isMobile ? 16 : 8;
+
+            const nearLeft = clientX >= rect.left && clientX <= rect.left + edgeThreshold;
+            const nearRight = clientX <= rect.right && clientX >= rect.right - edgeThreshold;
+            const nearTop = clientY >= rect.top && clientY <= rect.top + edgeThreshold;
+            const nearBottom = clientY <= rect.bottom && clientY >= rect.bottom - edgeThreshold;
+
+            if (!nearLeft && !nearRight && !nearTop && !nearBottom) {
+                return '';
+            }
+
+            const vertical = nearTop ? 'n' : (nearBottom ? 's' : '');
+            const horizontal = nearLeft ? 'w' : (nearRight ? 'e' : '');
+            return vertical + horizontal;
+        }
+
+        function getResizeCursor(direction) {
+            const cursorMap = {
+                n: 'ns-resize',
+                s: 'ns-resize',
+                e: 'ew-resize',
+                w: 'ew-resize',
+                ne: 'nesw-resize',
+                sw: 'nesw-resize',
+                nw: 'nwse-resize',
+                se: 'nwse-resize'
+            };
+            return cursorMap[direction] || '';
+        }
+
+        function startResize(clientX, clientY, targetWindow) {
+            if (!targetWindow || targetWindow.style.display === 'none') return false;
+            const windowId = targetWindow.id;
+            if (windowId && windowStates[windowId] && windowStates[windowId].isMaximized) {
+                return false;
+            }
+
+            const direction = getResizeDirection(clientX, clientY, targetWindow);
+            if (!direction) return false;
+
+            bringToFront(targetWindow);
+            isResizing = true;
+            resizingWindow = targetWindow;
+
+            const rect = targetWindow.getBoundingClientRect();
+            resizeStart.x = clientX;
+            resizeStart.y = clientY;
+            resizeStart.width = rect.width;
+            resizeStart.height = rect.height;
+            resizeStart.left = rect.left;
+            resizeStart.top = rect.top;
+            resizeStart.direction = direction;
+            return true;
+        }
+
+        function performResize(clientX, clientY) {
+            if (!isResizing || !resizingWindow) return;
+
+            const minWidth = 200;
+            const minHeight = 150;
+            const deltaX = clientX - resizeStart.x;
+            const deltaY = clientY - resizeStart.y;
+
+            let newWidth = resizeStart.width;
+            let newHeight = resizeStart.height;
+            let newLeft = resizeStart.left;
+            let newTop = resizeStart.top;
+
+            if (resizeStart.direction.includes('e')) {
+                newWidth = Math.max(minWidth, resizeStart.width + deltaX);
+            }
+            if (resizeStart.direction.includes('s')) {
+                newHeight = Math.max(minHeight, resizeStart.height + deltaY);
+            }
+            if (resizeStart.direction.includes('w')) {
+                const widthFromLeft = resizeStart.width - deltaX;
+                newWidth = Math.max(minWidth, widthFromLeft);
+                newLeft = resizeStart.left + (resizeStart.width - newWidth);
+            }
+            if (resizeStart.direction.includes('n')) {
+                const heightFromTop = resizeStart.height - deltaY;
+                newHeight = Math.max(minHeight, heightFromTop);
+                newTop = resizeStart.top + (resizeStart.height - newHeight);
+            }
+
+            resizingWindow.style.width = newWidth + 'px';
+            resizingWindow.style.height = newHeight + 'px';
+            resizingWindow.style.left = newLeft + 'px';
+            resizingWindow.style.top = newTop + 'px';
+
+            const windowId = resizingWindow.id;
+            if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
+                windowStates[windowId].width = newWidth + 'px';
+                windowStates[windowId].height = newHeight + 'px';
+                windowStates[windowId].left = newLeft + 'px';
+                windowStates[windowId].top = newTop + 'px';
+            }
+        }
+
         document.addEventListener('mousedown', function(e) {
-            if (e.target.classList.contains('resize-handle')) {
-                isResizing = true;
-                const window = e.target.closest('.window');
-                if (window) {
-                    bringToFront(window);
-                    resizeStart.x = e.clientX;
-                    resizeStart.y = e.clientY;
-                    resizeStart.width = window.offsetWidth;
-                    resizeStart.height = window.offsetHeight;
-                    e.preventDefault();
-                }
+            const targetWindow = e.target.closest('.window');
+            if (startResize(e.clientX, e.clientY, targetWindow)) {
+                e.preventDefault();
             }
         });
 
         // 触摸调整大小支持（移动端）
         document.addEventListener('touchstart', function(e) {
-            if (e.target.classList.contains('resize-handle')) {
-                isResizing = true;
-                const window = e.target.closest('.window');
-                if (window) {
-                    bringToFront(window);
-                    const touch = e.touches[0];
-                    resizeStart.x = touch.clientX;
-                    resizeStart.y = touch.clientY;
-                    resizeStart.width = window.offsetWidth;
-                    resizeStart.height = window.offsetHeight;
-                    e.preventDefault();
-                }
+            const touch = e.touches[0];
+            if (!touch) return;
+            const targetWindow = e.target.closest('.window');
+            if (startResize(touch.clientX, touch.clientY, targetWindow)) {
+                e.preventDefault();
             }
         });
 
         document.addEventListener('mousemove', function(e) {
             if (isResizing) {
-                const window = document.querySelector('.window[style*="z-index: 200"]');
-                if (window) {
-                    const deltaX = e.clientX - resizeStart.x;
-                    const deltaY = e.clientY - resizeStart.y;
-                    const newWidth = Math.max(200, resizeStart.width + deltaX);
-                    const newHeight = Math.max(150, resizeStart.height + deltaY);
-                    
-                    window.style.width = newWidth + 'px';
-                    window.style.height = newHeight + 'px';
-                    
-                    // Update window state when resizing (if not maximized)
-                    const windowId = window.id;
-                    if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
-                        windowStates[windowId].width = newWidth + 'px';
-                        windowStates[windowId].height = newHeight + 'px';
-                    }
-                }
+                performResize(e.clientX, e.clientY);
+                return;
+            }
+
+            if (isDragging) {
+                return;
+            }
+
+            const hoverWindow = e.target.closest('.window');
+            if (!hoverWindow || hoverWindow.style.display === 'none') {
+                document.body.style.cursor = '';
+                return;
+            }
+
+            const windowId = hoverWindow.id;
+            if (windowId && windowStates[windowId] && windowStates[windowId].isMaximized) {
+                document.body.style.cursor = '';
+                return;
+            }
+
+            const direction = getResizeDirection(e.clientX, e.clientY, hoverWindow);
+            document.body.style.cursor = getResizeCursor(direction);
+        });
+
+        document.addEventListener('mouseleave', function() {
+            if (!isResizing && !isDragging) {
+                document.body.style.cursor = '';
             }
         });
 
         // 触摸移动调整大小（移动端）
         document.addEventListener('touchmove', function(e) {
             if (isResizing) {
-                const window = document.querySelector('.window[style*="z-index: 200"]');
-                if (window) {
-                    const touch = e.touches[0];
-                    const deltaX = touch.clientX - resizeStart.x;
-                    const deltaY = touch.clientY - resizeStart.y;
-                    const newWidth = Math.max(200, resizeStart.width + deltaX);
-                    const newHeight = Math.max(150, resizeStart.height + deltaY);
-                    
-                    window.style.width = newWidth + 'px';
-                    window.style.height = newHeight + 'px';
-                    
-                    // Update window state when resizing (if not maximized)
-                    const windowId = window.id;
-                    if (windowId && windowStates[windowId] && !windowStates[windowId].isMaximized) {
-                        windowStates[windowId].width = newWidth + 'px';
-                        windowStates[windowId].height = newHeight + 'px';
-                    }
-                    
-                    e.preventDefault(); // 防止页面滚动
+                const touch = e.touches[0];
+                if (touch) {
+                    performResize(touch.clientX, touch.clientY);
                 }
+                e.preventDefault(); // 防止页面滚动
             }
         });
 
         document.addEventListener('mouseup', function() {
             isResizing = false;
+            resizingWindow = null;
+            document.body.style.cursor = '';
         });
 
         // 触摸结束调整大小（移动端）
         document.addEventListener('touchend', function() {
             isResizing = false;
+            resizingWindow = null;
+            document.body.style.cursor = '';
+        });
+
+        document.addEventListener('touchcancel', function() {
+            isResizing = false;
+            resizingWindow = null;
+            document.body.style.cursor = '';
         });
 
         function minimizeWindow(windowId) {
@@ -4191,6 +4293,10 @@ Click on the desktop icons to explore different features!</pre>
         let draggedWindow = null;
 
         document.addEventListener('mousedown', function(e) {
+            if (isResizing) {
+                return;
+            }
+
             if (e.target.closest('.window-controls') || e.target.closest('.window-control')) {
                 return;
             }
@@ -4212,6 +4318,10 @@ Click on the desktop icons to explore different features!</pre>
 
         // 触摸拖拽支持（移动端）
         document.addEventListener('touchstart', function(e) {
+            if (isResizing) {
+                return;
+            }
+
             if (e.target.closest('.window-controls') || e.target.closest('.window-control')) {
                 return;
             }
